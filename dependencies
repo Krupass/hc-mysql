@@ -1,0 +1,13 @@
+argparse
+configparser
+logging
+os
+platform
+subprocess
+pprint
+mysql-connector-python
+re
+pyyaml
+matplotlib
+pylatex
+psutil

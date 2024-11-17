@@ -1,0 +1,149 @@
+\section{Technical details}
+\subsection{LTS - Encryption at REST/transit}
+\paragraph{Description} This test verifies that database enforces encryption to ensure safe communication that cannot be eavesdropped. Improper configuration of encryption could lead to violation of CIA triade.
+
+This test found that following databases are not configured to ensure encrypted communication:
+\begin{center}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{TYPE} & \textbf{DATABASE} & \textbf{USER} & \textbf{ADDRESS} & \textbf{METHOD} \\ \hline
+host & all & all & 127.0.0.1/32 & scram-sha-256 \\ \hline
+host & all & all & ::1/128 & scram-sha-256 \\ \hline
+host & replication & all & 127.0.0.1/32 & scram-sha-256 \\ \hline
+host & replication & all & ::1/128 & scram-sha-256 \\ \hline
+\end{tabular}
+\end{center}
+\paragraph{Recommendation} We recoment implementing secure data transit with encryption.
+
+\subsection{Insecure authentication methods}
+\paragraph{Description} This test examines the configuration file 'pg\_hba.conf' for the presence of insecure authentication methods. Specifically, it identifies the use of 'md5' and 'password' methods, both of which are considered insecure. The 'md5' method employs a deprecated hash function that has been cryptographically compromised, while the 'password' method transmits credentials in plaintext, posing significant security risks.
+
+\textbf{Database uses configuration that enforce secure authentication methods}
+
+
+
+\subsection{Trust authentication}
+\paragraph{Description} Trust authentication permits unrestricted access to the database for any user without requiring a password. This configuration poses a significant security risk, as it allows potentially unauthorized individuals to gain access to sensitive data and perform unauthorized actions within the database. Utilizing trust authentication undermines the fundamental principle of access control and compromises the confidentiality, integrity, and availability of the database.
+
+\textbf{User cannot connect without authentication.}
+
+
+
+\subsection{Supported version of PostgreSQL}
+\paragraph{Description} This test verifies whether the database uses the latest software version. Outdated versions could contain security vulnerabilities that could be used by an attacker to compromise the database.
+
+\textbf{Database uses latest version of PostgreSQL.}
+
+
+
+\subsection{Permissions test}
+\paragraph{Description} The following table provides a comprehensive overview of all privileges assigned within the specified database. This information is crucial for evaluating the access control mechanisms in place and identifying potential security vulnerabilities. A thorough permissions audit ensures that only authorized users have appropriate access rights, minimizing the risk of unauthorized data access or modification. Following table contains users and their permission on database tables:
+
+
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{User Type} & \textbf{Table Schema} & \textbf{Table Name} & \textbf{Privilege Types} \\
+\hline
+public\_user & my\_schema & public\_info & SELECT \\
+\hline
+private\_user & my\_schema & public\_info & SELECT \\
+\hline
+private\_user & my\_schema & private\_info & SELECT \\
+\hline
+admin\_user & my\_schema & public\_info & INSERT, SELECT, UPDATE, DELETE \\
+\hline
+admin\_user & my\_schema & private\_info & INSERT, SELECT, UPDATE, DELETE \\
+\hline
+admin\_user & my\_schema & secret\_info & INSERT, SELECT, UPDATE, DELETE \\
+\hline
+\end{tabular}
+
+
+\subsection{Check pgcrypto}
+\paragraph{Description} Verifies whether the database is capable of encrypting its data on database layer.
+
+Database does not implement the pg\_crypto crypto extension,
+                                                            be installed using the \texttt{CREATE EXTENSION IF NOT EXISTS pgcrypto;}.
+                                                            Full guide on how to use this extension can be found on \url{https://www.postgresql.org/docs/current/pgcrypto.html}.
+
+
+
+\subsection{Role pg\_execute\_server\_program enabled}
+\paragraph{Description} Verifies that no user has role that enables command execution.
+
+\textbf{No users with pg\_execute\_server\_program were found.}
+
+
+
+\subsection{SQL server allowed to read or write operating system files}
+\paragraph{Description} Tests whether the database is able to access OS files.
+
+
+\textbf{Test was able to read postgresql.conf from SQL query}
+
+
+\subsection{Log configuration}
+\paragraph{Description} Verifies that the log configuration is correct.
+
+
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Configuration Name} & \textbf{DB Setting} & \textbf{Recommended Setting} & \textbf{Compliant} \\
+\hline
+log\_statement & N/A & ddl & $\times$ \\
+\hline
+log\_duration & N/A & on & $\times$ \\
+\hline
+log\_min\_duration\_statement & N/A & 0 & $\times$ \\
+\hline
+log\_connections & N/A & on & $\times$ \\
+\hline
+log\_disconnections & N/A & on & $\times$ \\
+\hline
+log\_lock\_waits & N/A & on & $\times$ \\
+\hline
+log\_temp\_files & N/A & 0 & $\times$ \\
+\hline
+
+\end{tabular}
+
+
+\subsection{Client side errors}
+\paragraph{Description} Verifies that the database doesnt return errors to the client side.
+
+
+
+Aplication does not set up parameters for verbosity of errors.
+
+
+\subsection{Configuration of SSL}
+\paragraph{Description} Verifies that has the correct ssl configuration in postgres.conf
+
+
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Configuration Name} & \textbf{DB Setting} & \textbf{Recommended Setting} & \textbf{Compliant} \\
+\hline
+ssl & N/A & on & $\times$ \\
+\hline
+ssl\_cert\_file & N/A & \textless{}cert file\textgreater{} & $\times$ \\
+\hline
+ssl\_key\_file & N/A & \textless{}key file\textgreater{} & $\times$ \\
+\hline
+ssl\_ca\_file & N/A & \textless{}root cert file\textgreater{} & $\times$ \\
+\hline
+ssl\_prefer\_server\_ciphers & N/A & on & $\times$ \\
+\hline
+\end{tabular}
+
+
+\subsection{Unlimited superuser access}
+\paragraph{Description} This test checks superuser accounts, and verifies whether they have limited access or not.
+
+
+\begin{itemize}
+\item admin\_user - Access to all tables: Yes
+
+\end{itemize}
+
+
