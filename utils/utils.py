@@ -104,6 +104,6 @@ def build_connect_string(args):
     }
     
     
-    connection_string = ' '.join(f"{key}={value}" for key, value in components.items() if value is not None)
+    connection_string = ' '.join(f"{key}={value}, " for key, value in components.items() if value is not None)
     logger().info(f"Connection string prepared: {connection_string}")
     return connection_string
