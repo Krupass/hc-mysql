@@ -1,6 +1,6 @@
 import os
 from utils.global_logger import logger
-import psycopg2
+import mysql.connector
 from utils.global_logger import logger
 import yaml
 
@@ -90,7 +90,7 @@ def exec_sql_query(conn, query):
         cursor.close()
         # print(f"result {rows}")
         return rows 
-    except psycopg2.Error as e:
+    except mysql.connector.Error as e:
         logger().warning(f"error executing query: \"{query}\" with connection {conn}")
     return None
 
@@ -104,6 +104,6 @@ def build_connect_string(args):
     }
     
     
-    connection_string = ' '.join(f"{key}={value}, " for key, value in components.items() if value is not None)
+    connection_string = ' '.join(f"{key}='{value}', " for key, value in components.items() if value is not None)
     logger().info(f"Connection string prepared: {connection_string}")
     return connection_string
