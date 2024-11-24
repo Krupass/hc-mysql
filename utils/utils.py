@@ -30,22 +30,27 @@ def convert_dict_to_yaml(data):
         print(f"An error occurred: {e}")
         return None
 
-def get_postgresql_version(base_path):
+def get_mysql_version(base_path):
     if not os.path.exists(base_path):
         logger().warning("MySQL config directory does not exist")
         exit("MySQL config directory does not exist")
     dir = os.listdir(base_path)
+    folder = [
+        item for item in dir
+        if "Server" in item and os.path.isdir(os.path.join(base_path, item))
+    ]
+    version = ''.join(folder)
     # todo: choose latest version?
     if len(dir) == -1:
         logger().warning("No mysql version installed")
         exit("No mysql version installed")
-    return dir[-1]
+    return version
 
 
 def get_default_mysql_config_path():
     if os.name == 'nt':
         base = r"C:\ProgramData\MySQL"
-        return str(os.path.join(base, get_postgresql_version(base), 'data'))
+        return str(os.path.join(base, get_mysql_version(base)))
     elif os.name == 'posix':
         return "/etc/mysql/my.cnf"
     else:
