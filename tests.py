@@ -3,7 +3,7 @@ import pprint
 import re
 from utils.global_logger import logger
 from utils.utils import exec_sql_query
-from utils.utils import get_postgresql_version_cmd as get_postgresql_version
+from utils.utils import get_mysql_version_cmd as get_mysql_version
 import utils.parsers as parser
 import latex_generator as latex_g
 import pprint
@@ -302,14 +302,14 @@ def test_if_uses_ldap_or_ad(sess):
     }
 
 def test_software_version(sess):
-    postgresql_version = get_postgresql_version(sess.config_path)
+    mysql_version = get_mysql_version(sess.config_path)
 
     def versiontuple(v):
         return tuple(map(int, (v.split("."))))
 
     # zatim je tam napevno naprogramovana nejnovejsi verze. V budoucnu by tam mohl byt call ktery by bral nejnovejsi verzi z nejakeho api nebo tak
-    is_updated = versiontuple(postgresql_version) >= versiontuple("16.0.0")
+    is_updated = versiontuple(mysql_version) >= versiontuple("16.0.0")
     return {
         'compliant' : is_updated,
-        'config_details' : str(postgresql_version)
+        'config_details' : str(mysql_version)
     }

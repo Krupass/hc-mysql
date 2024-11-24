@@ -52,24 +52,49 @@ def get_default_mysql_config_path():
         logger().info("unknown operational system: " + os.name)
         return None
 
-def get_postgresql_version_cmd(base_path):
+# def get_postgresql_version_cmd(base_path):
+#     import platform, subprocess
+#     current_platform = platform.system()
+#     try:
+#         if current_platform == 'Windows':
+#             pg_config_cmd = os.path.join(os.path.dirname(base_path), r"bin\\pg_config")
+#             subprocess.run([pg_config_cmd, "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, text=True)
+#         else:  # Assuming Linux
+#             pg_config_cmd = 'pg_config'
+#             subprocess.run([pg_config_cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, text=True)
+#         version_output = subprocess.check_output([pg_config_cmd, '--version'], text=True)
+#
+#         version_lines = version_output.strip().split('\n')
+#         postgresql_version = version_lines[0].split()[-1]
+#         return str(postgresql_version)
+#
+#     except subprocess.CalledProcessError as e:
+#         raise str(e)
+
+
+def get_mysql_version_cmd(base_path):
     import platform, subprocess
+    import os
     current_platform = platform.system()
+
     try:
         if current_platform == 'Windows':
-            pg_config_cmd = os.path.join(os.path.dirname(base_path), r"bin\\pg_config")
-            subprocess.run([pg_config_cmd, "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, text=True)
+            mysql_cmd = os.path.join(os.path.dirname(base_path), r"bin\mysql")
         else:  # Assuming Linux
-            pg_config_cmd = 'pg_config'
-            subprocess.run([pg_config_cmd], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, text=True)
-        version_output = subprocess.check_output([pg_config_cmd, '--version'], text=True)
+            mysql_cmd = 'mysql'
 
+        # Spustit příkaz mysql --version
+        version_output = subprocess.check_output([mysql_cmd, '--version'], text=True)
+
+        # Parsování výstupu
         version_lines = version_output.strip().split('\n')
-        postgresql_version = version_lines[0].split()[-1]
-        return str(postgresql_version)
+        mysql_version = version_lines[0].split()[4]  # Pátý token obvykle obsahuje verzi
+        return str(mysql_version)
 
     except subprocess.CalledProcessError as e:
-        raise str(e)
+        raise RuntimeError(f"Failed to get MySQL version: {str(e)}")
+    except FileNotFoundError:
+        raise RuntimeError("MySQL executable not found. Ensure it's installed and in your PATH.")
 
 
 def rewrite_file(filename, content):

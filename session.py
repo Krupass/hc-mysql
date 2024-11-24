@@ -19,6 +19,7 @@ from experimental_db_setup import setup_database
 class Session():
     def __init__(self, args):
         self.config_path = args.path
+        self.path = "C:Program Files\MySQL\MySQL Server 8.0\\"
         self.resources = []
         self.conn = None
         self.hba_conf = None

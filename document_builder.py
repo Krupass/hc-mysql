@@ -8,7 +8,7 @@ import matplotlib
 matplotlib.use('Agg')  
 import matplotlib.pyplot as plt
 import uuid
-from utils.utils import get_postgresql_version_cmd as get_postgresql_version
+from utils.utils import get_mysql_version_cmd as get_mysql_version
 
 
 class DocumentBuilder:
@@ -137,7 +137,7 @@ class DocumentBuilder:
             RAM: {latex_g.escape_latex(str(ram_info))} GB \\\\
             Storage Size: {latex_g.escape_latex(str(disk_info))} GB \\\\
             Operating System: {latex_g.escape_latex(str(os_info))} \\\\
-            PostgreSQL Version: {latex_g.escape_latex(get_postgresql_version(identity.path))}
+            MySQL Version: {latex_g.escape_latex(get_mysql_version(identity.path))}
                 """
         rewrite_file("latex_template/intro.tex", latex_preamble)
 
