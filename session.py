@@ -32,7 +32,7 @@ class Session():
             args.name = "{}-{}_{}".format(args.dbname, args.host, args.port)
 
         try:
-            self.conn = mysql.connector.connect(build_connect_string(args))
+            self.conn = mysql.connector.connect(**build_connect_string(args))
             logger().info(f"connection established successfully, connection details: {self.conn}")
             self.resources.append('db_connection')
         except mysql.connector.Error as e:

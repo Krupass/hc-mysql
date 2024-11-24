@@ -96,14 +96,14 @@ def exec_sql_query(conn, query):
 
 def build_connect_string(args):
     components = {
-        'dbname': getattr(args, 'dbname', None),
+        'database': getattr(args, 'dbname', None),
         'user': getattr(args, 'user', None),
         'password': getattr(args, 'password', None),
         'host': getattr(args, 'host', None),
         'port': getattr(args, 'port', None)
     }
-    
-    
-    connection_string = ' '.join(f"{key}='{value}', " for key, value in components.items() if value is not None)
-    logger().info(f"Connection string prepared: {connection_string}")
-    return connection_string
+
+    components = {key: value for key, value in components.items() if value is not None}
+
+    logger().info(f"Connection parameters prepared: {components}")
+    return components
