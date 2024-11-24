@@ -137,7 +137,7 @@ class DocumentBuilder:
             RAM: {latex_g.escape_latex(str(ram_info))} GB \\\\
             Storage Size: {latex_g.escape_latex(str(disk_info))} GB \\\\
             Operating System: {latex_g.escape_latex(str(os_info))} \\\\
-            MySQL Version: {latex_g.escape_latex(get_mysql_version(identity.path))}
+            MySQL Version: {latex_g.escape_latex(get_mysql_version(identity.peth))}
                 """
         rewrite_file("latex_template/intro.tex", latex_preamble)
 
