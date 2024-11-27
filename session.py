@@ -51,21 +51,22 @@ class Session():
 
             self.my_conf = {}
 
+            group = None
             for line in content.splitlines():
-                group = None
                 if line.strip() and not line.strip().startswith("#"):
                     if line.strip().startswith("["):
                         group = line.strip()[1:-1]
                     if "=" in line:
                         key, value = line.split("=", 1)
-                        if not group is None:
-                            self.my_conf[group + "_" + key.strip()] = value.strip()
-                        else:
+                        if group is None:
                             self.my_conf[key.strip()] = value.strip()
+                        else:
+                            key = f"{group}_{key.strip()}"
+                            self.my_conf[key] = value.strip()
 
 
-            for key, value in self.my_conf.items():
-                print(f"{key}:  {value}")
+            # for key, value in self.my_conf.items():
+            #     print(f"{key}: {value}")
 
             logger().info("my.ini configuration file successfully loaded.")
             self.resources.append('my.ini')

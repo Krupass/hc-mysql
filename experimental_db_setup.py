@@ -8,7 +8,7 @@ from utils.utils import build_connect_string
 def setup_database(args, db_name, sql_file_path='example_db/create_db.sql'):
     default_conn_str = build_connect_string(args)
     try:
-        conn = mysql.connector.connect(default_conn_str)
+        conn = mysql.connector.connect(**default_conn_str)
         conn.autocommit = True
         cur = conn.cursor()
     except mysql.connector.Error as e:
@@ -46,7 +46,7 @@ def setup_database(args, db_name, sql_file_path='example_db/create_db.sql'):
 
     
     # pripojeni na nove vytvorenou db
-    conn = mysql.connector.connect(default_conn_str)
+    conn = mysql.connector.connect(**default_conn_str)
     conn.autocommit = True
     cur = conn.cursor()
 
@@ -59,8 +59,8 @@ def setup_database(args, db_name, sql_file_path='example_db/create_db.sql'):
         logger().info(f"Database {db_name} setup completed.")
         cur.close()
         conn.close()
-    except:
-        logger().warning(f"Error while executing {sql_file_path} script")
+    except Exception as e:
+        logger().warning(f"Error while executing {sql_file_path} script: {e}")
 
     
 
