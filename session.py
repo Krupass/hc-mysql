@@ -45,10 +45,15 @@ class Session():
         # postgresql_conf_path = os.path.join(self.config_path, "postgresql.conf")
 
         try:
-            with open(my_conf_path, "r") as file:
-                self.my_conf = file.read()
+            with open(my_conf_path, "r", encoding="utf-8") as file:
+                content = file.read()
                 file.close()
 
+            self.my_conf = [
+                line for line in content.splitlines()
+                if line.strip() and not line.strip().startswith("#")
+            ]
+            
             logger().info("my.ini configuration file successfully loaded.")
             self.resources.append('my.ini')
             print(self.my_conf)
