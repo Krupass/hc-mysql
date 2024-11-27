@@ -21,7 +21,7 @@ class Session():
         self.config_path = args.path
         self.resources = []
         self.conn = None
-        self.hba_conf = None
+        self.my_conf = None
         self.privileges = None
         self.document_builder = DocumentBuilder(args.language)
         if args.setup_db == True:
@@ -39,10 +39,21 @@ class Session():
             logger().warning(f"Error: {e}")
             #vynechat testy ktere potrebuji pripojeni k databazi
 
-        # hba_conf_path = os.path.join(self.config_path, "pg_hba.conf")
+        my_conf_path = os.path.join(self.config_path, "my.ini")
         # todo zjistit co z pg_hba.conf a postgresql.conf je v souboru my.ini a co v uživatelske tabulce mysql.user
+        # hba_conf_path = os.path.join(self.config_path, "pg_hba.conf")
         # postgresql_conf_path = os.path.join(self.config_path, "postgresql.conf")
-        
+
+        try:
+            with open(my_conf_path, "r") as file:
+                self.my_conf = file.read()
+                file.close()
+
+            logger().info("my.ini configuration file successfully loaded.")
+            self.resources.append('my.ini')
+            print(self.my_conf)
+        except FileNotFoundError:
+            logger().warning(f"config file not found: {my_conf_path}")
 
         # parse pg hba conf
         # try:
