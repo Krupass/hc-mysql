@@ -228,6 +228,8 @@ def test_transit_encryption(sess):
     query = "SELECT user, host, ssl_type FROM mysql.user WHERE ssl_type != '';"
     compliant = None
 
+    logger().info("Testing transit encryption...")
+
     cur.execute(query)
     result = cur.fetchall()
     cur.close()
@@ -242,10 +244,10 @@ def test_transit_encryption(sess):
         user, host, ssl_type = row
         if not user.strip().startswith("mysql."):
             if ssl_type.strip().lower() == "x509" or ssl_type.strip().lower() == "ssl":
-                print("User: " + user.strip() + " has ssl_type: " + ssl_type.strip() + " and is correcly setup.")
+                print("User: " + user.strip() + " has ssl_type: " + ssl_type.strip() + " and is correctly setup.")
             else:
                 compliant = False
-                print("User: " + user.strip() + " has ssl_type: " + ssl_type.strip() + " and is not correcly setup!")
+                print("User: " + user.strip() + " has ssl_type: " + ssl_type.strip() + " and is not correctly setup!")
 
             if host.strip() == "%":
                 host = r'\%'

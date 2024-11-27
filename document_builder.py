@@ -199,7 +199,7 @@ class DocumentBuilder:
                         "Improper configuration of encryption could lead to violation of CIA triade.",
                         "compliant": False,
                         "show_config": True,
-                        "required": ['mysql.user'],
+                        "required": ['db_connection'],
                         "to_be_tested": True,
                         "severity": self.sev["low"],
                         "description_noncompliant": "This test found that following databases are not configured to "
