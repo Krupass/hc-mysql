@@ -225,8 +225,9 @@ def check_pg_crypto_extension(sess):
 def test_transit_encryption(sess):
     connection = sess.conn
     cur = connection.cursor()
-    query = "SELECT user, host, ssl_type FROM mysql.user WHERE ssl_type != '';"
+    query = "SELECT user, host, ssl_type FROM mysql.user;"
     compliant = None
+    was_compliant_false = False
 
     logger().info("Testing transit encryption...")
 
@@ -234,32 +235,31 @@ def test_transit_encryption(sess):
     result = cur.fetchall()
     cur.close()
 
-    latex_table = ["\n "]
-    latex_table.append("\\begin{center}")
-    latex_table.append("\\begin{tabular}{|l|l|l|l|l|}")
-    latex_table.append("\\hline")
-    latex_table.append("\\textbf{USER} & \\textbf{HOST} & \\textbf{SSL_TYPE}  \\\\ \\hline")
+    latex_table = "\\begin{center}\n\\begin{tabular}{|l|l|l|}\n\\hline\n"
+    latex_table += "\\textbf{USER} & \\textbf{HOST} & \\textbf{SSL\\_TYPE} \\\\ \\hline\n"
 
     for row in result:
         user, host, ssl_type = row
         if not user.strip().startswith("mysql."):
             if ssl_type.strip().lower() == "x509" or ssl_type.strip().lower() == "ssl":
+                compliant = True
                 print("User: " + user.strip() + " has ssl_type: " + ssl_type.strip() + " and is correctly setup.")
             else:
                 compliant = False
+                was_compliant_false = True
+
+                latex_row = f"{latex_g.escape_latex(user)} & {latex_g.escape_latex(host)} & {latex_g.escape_latex(ssl_type)} \\\\ \\hline\n"
+                latex_table += latex_row
+
                 print("User: " + user.strip() + " has ssl_type: " + ssl_type.strip() + " and is not correctly setup!")
 
-            if host.strip() == "%":
-                host = r'\%'
-            latex_row = f"{user} & {host} & {ssl_type} \\\\ \\hline"
-            latex_table.append(latex_row)
-
-    if compliant is None:
+    if was_compliant_false is False:
         compliant = True
+    elif was_compliant_false is True:
+        compliant = False
 
-    latex_table.append("\\end{tabular}")
-    latex_table.append("\\end{center}")
-    latex_table.append("\n")
+    latex_table += "\\end{tabular}"
+    latex_table += "\\end{center}\n"
 
     return {
         'compliant' : compliant,

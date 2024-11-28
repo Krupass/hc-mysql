@@ -194,7 +194,7 @@ class DocumentBuilder:
             document_data = {
                 "en": {
                     1: {
-                        "subsection": "LTS - Encryption at REST/transit",
+                        "subsection": "Encryption at transit",
                         "description": "This test verifies that database enforces encryption to ensure safe communication that cannot be eavesdropped. "
                         "Improper configuration of encryption could lead to violation of CIA triade.",
                         "compliant": False,
@@ -202,9 +202,9 @@ class DocumentBuilder:
                         "required": ['db_connection'],
                         "to_be_tested": True,
                         "severity": self.sev["low"],
-                        "description_noncompliant": "This test found that following databases are not configured to "
+                        "description_noncompliant": "This test found that following users are not configured to "
                                                  "ensure encrypted communication:",
-                        "description_compliant": "This test found that all databases enforce encryption.",
+                        "description_compliant": "This test found that all users enforce encrypted comunication.",
                         "config_details": "",
                         "recommendation":"We recoment implementing secure data transit with encryption.",
                         "test_function": tests.test_transit_encryption
