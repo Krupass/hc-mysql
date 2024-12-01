@@ -4,7 +4,7 @@ import latex_generator as latex_g
 
 
 
-def postgres_conf_dict_to_latex_table(data):
+def mysql_conf_dict_to_latex_table(data):
     latex_table = "\\begin{center}\n\\begin{tabular}{|l|l|}\n\\hline\n"
     latex_table += "\\textbf{Parameter} & \\textbf{Value} \\\\\n\\hline\n"
 

@@ -39,7 +39,7 @@ def unlimited_superuser_access(sess):
 def check_if_ssl_is_enabled(sess):
     # Rozšířený seznam SSL nastavení
     ssl_settings_names = ['ssl', 'ssl_cert_file', 'ssl_key_file', 'ssl_ca_file', 'ssl_prefer_server_ciphers']
-    db_ssl_settings = {key: value for key, value in sess.postgresql_conf.items() if key in ssl_settings_names}
+    db_ssl_settings = {key: value for key, value in sess.mysql_conf.items() if key in ssl_settings_names}
 
     # Inicializace proměnných
     compliant = True
@@ -88,7 +88,7 @@ def check_verbose_errors(sess):
     verbose_log_min_messages = ['debug5', 'debug4', 'debug3', 'debug2', 'debug1', 'debug', 'info', 'notice', 'warning']
     verbose_log_min_error_statement = ['error', 'warning', 'notice', 'info', 'log', 'debug', 'debug1', 'debug2', 'debug3', 'debug4', 'debug5']
     details = ""
-    client_side_errors = {key: value for key, value in sess.postgresql_conf.items() if key in client_side_log_settings}
+    client_side_errors = {key: value for key, value in sess.mysql_conf.items() if key in client_side_log_settings}
     log_min_messages = client_side_errors.get('log_min_messages', '').lower()
     log_min_error_statement = client_side_errors.get('log_min_error_statement', '').lower()
 
@@ -102,7 +102,7 @@ def check_verbose_errors(sess):
         compliant = False
     else:
         details += "\nConfiguration of error handling allows for user to receive non-generic errors"
-        details += latex_g.postgres_conf_dict_to_latex_table(client_side_errors)
+        details += latex_g.mysql_conf_dict_to_latex_table(client_side_errors)
     
     #print(client_side_errors)
     return {
@@ -124,7 +124,7 @@ def check_log_configuration(sess):
         'log_temp_files': '0'
     }
     
-    log_values = {key: value for key, value in sess.postgresql_conf.items() if key in recommended_values}
+    log_values = {key: value for key, value in sess.mysql_conf.items() if key in recommended_values}
     print("LOGS ", log_values)
     compliant = True
     details = "\\begin{tabular}{|l|c|c|c|}\n\\hline\n\\textbf{Configuration Name} & \\textbf{DB Setting} & \\textbf{Recommended Setting} & \\textbf{Compliant} \\\\\n\\hline\n"
@@ -146,11 +146,11 @@ def check_log_configuration(sess):
 
 def check_pg_file_access(sess):
     compliant = True
-    query = "SELECT pg_read_file('postgresql.conf', 0, 1000);"
+    query = "SELECT pg_read_file('mysql.conf', 0, 1000);"
     rows1 = exec_sql_query(sess.conn, query)
     details = ""
     if rows1 != None:
-        details += "\\textbf{Test was able to read postgresql.conf from SQL query}"
+        details += "\\textbf{Test was able to read mysql.conf from SQL query}"
         compliant = False
     return {
         'compliant' : compliant, 
@@ -188,7 +188,7 @@ def check_if_user_has_pg_execute_server_program(sess):
     
 
 # it shouldn't have backup_directory as parameter but session
-def check_postgresql_backup(backup_directory):
+def check_mysql_backup(backup_directory):
     compliant = False
     try:
         backup_files = os.listdir(backup_directory)
@@ -334,7 +334,7 @@ def test_software_version(sess):
         return tuple(map(int, (v.split("."))))
 
     # zatim je tam napevno naprogramovana nejnovejsi verze. V budoucnu by tam mohl byt call ktery by bral nejnovejsi verzi z nejakeho api nebo tak
-    is_updated = versiontuple(mysql_version) >= versiontuple("16.0.0")
+    is_updated = versiontuple(mysql_version) >= versiontuple("8.0.0")
     return {
         'compliant' : is_updated,
         'config_details' : str(mysql_version)

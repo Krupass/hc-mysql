@@ -76,7 +76,7 @@ def parse_pg_hba_config(self, path):
 
     return pg_hba_config
     
-def parse_postgresql_conf(self, path):
+def parse_mysql_conf(self, path):
     config = {}
     try:
         with open(path, 'r') as file:

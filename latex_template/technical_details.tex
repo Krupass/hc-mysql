@@ -29,10 +29,10 @@ host & replication & all & ::1/128 & scram-sha-256 \\ \hline
 
 
 
-\subsection{Supported version of PostgreSQL}
+\subsection{Supported version of MySQL}
 \paragraph{Description} This test verifies whether the database uses the latest software version. Outdated versions could contain security vulnerabilities that could be used by an attacker to compromise the database.
 
-\textbf{Database uses latest version of PostgreSQL.}
+\textbf{Database uses latest version of MySQL.}
 
 
 
@@ -64,7 +64,6 @@ admin\_user & my\_schema & secret\_info & INSERT, SELECT, UPDATE, DELETE \\
 
 Database does not implement the pg\_crypto crypto extension,
                                                             be installed using the \texttt{CREATE EXTENSION IF NOT EXISTS pgcrypto;}.
-                                                            Full guide on how to use this extension can be found on \url{https://www.postgresql.org/docs/current/pgcrypto.html}.
 
 
 
@@ -79,7 +78,7 @@ Database does not implement the pg\_crypto crypto extension,
 \paragraph{Description} Tests whether the database is able to access OS files.
 
 
-\textbf{Test was able to read postgresql.conf from SQL query}
+\textbf{Test was able to read my.ini from SQL query}
 
 
 \subsection{Log configuration}
@@ -117,7 +116,7 @@ Aplication does not set up parameters for verbosity of errors.
 
 
 \subsection{Configuration of SSL}
-\paragraph{Description} Verifies that has the correct ssl configuration in postgres.conf
+\paragraph{Description} Verifies that has the correct ssl configuration in my.ini
 
 
 \begin{tabular}{|l|l|l|l|}

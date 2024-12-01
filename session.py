@@ -40,9 +40,6 @@ class Session():
             #vynechat testy ktere potrebuji pripojeni k databazi
 
         my_conf_path = os.path.join(self.config_path, "my.ini")
-        # todo zjistit co z pg_hba.conf a postgresql.conf je v souboru my.ini a co v uživatelske tabulce mysql.user
-        # hba_conf_path = os.path.join(self.config_path, "pg_hba.conf")
-        # postgresql_conf_path = os.path.join(self.config_path, "postgresql.conf")
 
         try:
             with open(my_conf_path, "r", encoding="utf-8") as file:
@@ -73,22 +70,6 @@ class Session():
 
         except FileNotFoundError:
             logger().warning(f"config file not found: {my_conf_path}")
-
-        # parse pg hba conf
-        # try:
-        #     self.hba_conf = parse.parse_pg_hba_config(self, hba_conf_path)
-        #     logger().info("pg_hba.conf successfully parsed.")
-        #     self.resources.append('pg_hba.conf')
-        # except:
-        #     logger().warning("pg_hba.conf couldn't be parsed.")
-        
-        # parse postgresql try:
-        # try:
-        #     self.postgresql_conf = parse.parse_postgresql_conf(self, postgresql_conf_path)
-        #     logger().info("postgresql.conf successfully parsed.")
-        #     self.resources.append('postgresql.conf')
-        # except:
-        #     logger().warning("postgresql.conf couldn't be parsed.")
 
 
         # parse database privileges

@@ -14,14 +14,14 @@ from pathlib import Path
 Args = namedtuple('Args', ['path', 'dbname', 'user', 'password', 'host', 'name', 'custom_latex_engine', 'port', 'language', 'no_report', 'setup_db'])
 
 args = Args(
-    path=Path('C:/Program Files/PostgreSQL/16/data'),
+    path=Path('C:/Program Files/MySQL/data'),
     dbname='experimental_paralel_db',
-    user='postgres',
-    password='postgres',
+    user='root',
+    password='test',
     host='localhost',
     name='paralel_testing_example',
     custom_latex_engine='pdflatex',
-    port='5432',
+    port='3306',
     language='en',
     no_report=True,
     setup_db=True

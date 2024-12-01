@@ -128,7 +128,7 @@ class DocumentBuilder:
         latex_preamble = f"""
             \\newpage
             \\section*{{Tested System Information}}
-            \\noindent Path to PostgreSQL Configuration: {latex_g.escape_latex(str(identity.path))} \\\\
+            \\noindent Path to MySQL Configuration: {latex_g.escape_latex(str(identity.path))} \\\\
             Database Name: {latex_g.escape_latex(str(identity.dbname))} \\\\
             User: {latex_g.escape_latex(str(identity.user))} \\\\
             Host: {latex_g.escape_latex(str(identity.host))} \\\\
@@ -253,8 +253,8 @@ class DocumentBuilder:
                         "required": ['db_connection'],
                         "to_be_tested": False,
                         "severity": self.sev["low"],
-                        "description_compliant": "\\textbf{Database uses latest version of PostgreSQL.}",
-                        "description_noncompliant": "Database uses outdated version of PostgreSQL: ",
+                        "description_compliant": "\\textbf{Database uses latest version of MySQL.}",
+                        "description_noncompliant": "Database uses outdated version of MySQL: ",
                         "config_details": "",
                         "test_function": tests.test_software_version                    
                     },
@@ -285,8 +285,7 @@ class DocumentBuilder:
                             "severity": self.sev["low"],
                             "description_compliant": "\\textbf{Database has extension pg_crypto installed.}",
                             "description_noncompliant": """Database does not implement the pg_crypto crypto extension,
-                                                            be installed using the \\texttt{CREATE EXTENSION IF NOT EXISTS pgcrypto;}.
-                                                            Full guide on how to use this extension can be found on \\url{https://www.postgresql.org/docs/current/pgcrypto.html}.""",
+                                                            be installed using the \\texttt{CREATE EXTENSION IF NOT EXISTS pgcrypto;}.""",
                             "config_details": "",
                             "test_function": tests.check_pg_crypto_extension
                     },

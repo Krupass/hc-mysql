@@ -7,10 +7,10 @@ sys.path.insert(0, parent_dir)
 
 from dbaudit import generate_database_documentation
 
-user = "postgres"
-password = "postgres"  # Prázdný řetězec pro heslo
+user = "root"
+password = "test"  # Prázdný řetězec pro heslo
 host = "localhost"  # Předpokládá se výchozí hodnota
-port = "5432"  # Předpokládá se výchozí hodnota
+port = "3306"  # Předpokládá se výchozí hodnota
 name = "report"
 setup_db = True  # Příznak pro nastavení databáze
 
