@@ -74,7 +74,7 @@ def get_mysql_version_cmd(base_path):
 
         # Parsování výstupu
         version_lines = version_output.strip().split('\n')
-        mysql_version = version_lines[0].split()[4]  # Pátý token obvykle obsahuje verzi
+        mysql_version = version_lines[0].split()[5]
         return str(mysql_version)
 
     except subprocess.CalledProcessError as e:

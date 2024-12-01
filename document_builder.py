@@ -71,9 +71,11 @@ class DocumentBuilder:
         for key, item in data.items():
             severity = item.get('severity', '').lower()
             compliant = item.get('compliant', False)
+            to_be_tested = item.get('to_be_tested', '')
             if severity in severity_count and compliant == False:
-                severity_count[severity] += 1
-                total_count += 1
+                if to_be_tested:
+                    severity_count[severity] += 1
+                    total_count += 1
 
         plt.figure(figsize=(10, 6))
         plt.bar(severity_count.keys(), severity_count.values(), color=['green', 'yellow', 'red', 'blue'])
