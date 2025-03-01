@@ -276,17 +276,18 @@ def test_insecure_auth_methods(sess):
     compliant = True
 
     for user, values in mysql_auth_methods.items():
-        host, plugin = values
+        if not user.strip().startswith("mysql."):
+            host, plugin = values
 
-        if plugin in insecure_methods:
-            user_plugins_sorted[user] = [plugin, "insecure"]
-            compliant = False
-        elif plugin in warning_methods:
-            user_plugins_sorted[user] = [plugin, "warning"]
-        elif plugin in secure_methods:
-            user_plugins_sorted[user] = [plugin, "secure"]
-        else:
-            user_plugins_sorted[user] = [plugin, "unknown"]
+            if plugin in insecure_methods:
+                user_plugins_sorted[user] = [plugin, "insecure"]
+                compliant = False
+            elif plugin in warning_methods:
+                user_plugins_sorted[user] = [plugin, "warning"]
+            elif plugin in secure_methods:
+                user_plugins_sorted[user] = [plugin, "secure"]
+            else:
+                user_plugins_sorted[user] = [plugin, "unknown"]
 
 
 

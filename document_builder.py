@@ -220,7 +220,7 @@ class DocumentBuilder:
                                         "in plaintext, posing significant security risks.",
                         "compliant": False,
                         "show_config": True,
-                        "required": ['mysql.user'],
+                        "required": ['db_connection'],
                         "to_be_tested": True,
                         "severity": self.sev["medium"],
                         "description_compliant": "\\textbf{Database uses configuration that enforce secure authentication methods}",
