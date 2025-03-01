@@ -33,23 +33,15 @@ def privilege_dict_to_latex_table(privilege_dict):
     latex_table += "\\end{tabular}"
     return latex_table
 
-def pg_hba_struct_to_latex(hba_dict):
+def detail_to_latex(sorted_dict):
     latex_table = ["\\begin{center}"]
-    latex_table.append("\\begin{tabular}{|l|l|l|l|l|}")
+    latex_table.append("\\begin{tabular}{|l|l|l|}")
     latex_table.append("\\hline")
-    latex_table.append("\\textbf{TYPE} & \\textbf{DATABASE} & \\textbf{USER} & \\textbf{ADDRESS} & \\textbf{METHOD} \\\\ \\hline")
-    for database, rules in hba_dict.items():
-        for rule in rules:
-            conn_type = rule.get('type', '')
-            user = rule.get('user', '')
-            address = rule.get('address', '')
-            method = rule.get('authentication_method', '')
-            
-            if conn_type == 'local' and not address:
-                address = '---'  # Use '---' or leave blank as per your preference
-
-            latex_row = f"{escape_latex(conn_type)} & {escape_latex(database)} & {escape_latex(user)} & {escape_latex(address)} & {escape_latex(method)} \\\\ \\hline"
-            latex_table.append(latex_row)
+    latex_table.append("\\textbf{User} & \\textbf{Plugin} & \\textbf{Security} \\\\ \\hline")
+    for user, values in sorted_dict.items():
+        plugin, security = values
+        latex_row = f"{escape_latex(user)} & {escape_latex(plugin)} & {escape_latex(security)} \\\\ \\hline"
+        latex_table.append(latex_row)
     
     latex_table.append("\\end{tabular}")
     latex_table.append("\\end{center}")

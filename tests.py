@@ -268,20 +268,34 @@ def test_transit_encryption(sess):
 
 
 def test_insecure_auth_methods(sess):
-    pg_hba = sess.hba_conf
-    insecure_methods = ["trust", "password"]
-    filtered_dict = {}
-    for key, values in pg_hba.items():
-        filtered_values = [value for value in values if value.get('authentication_method') in insecure_methods]
-        if filtered_values:
-            filtered_dict[key] = filtered_values
+    mysql_auth_methods = parser.parse_auth_methods(sess)
+    insecure_methods = ["mysql_native_password", "mysql_old_password"]
+    warning_methods = ["authentication_string"]
+    secure_methods = ["caching_sha2_password", "sha256_password"]
+    user_plugins_sorted = {}
+    compliant = True
+
+    for user, values in mysql_auth_methods.items():
+        host, plugin = values
+
+        if plugin in insecure_methods:
+            user_plugins_sorted[user] = [plugin, "insecure"]
+            compliant = False
+        elif plugin in warning_methods:
+            user_plugins_sorted[user] = [plugin, "warning"]
+        elif plugin in secure_methods:
+            user_plugins_sorted[user] = [plugin, "secure"]
+        else:
+            user_plugins_sorted[user] = [plugin, "unknown"]
+
+
 
     details = ""
-    if bool(filtered_dict):
-        details = latex_g.pg_hba_struct_to_latex(filtered_dict)
+    if bool(user_plugins_sorted):
+        details = latex_g.detail_to_latex(user_plugins_sorted)
     
     return {
-        'compliant' : not bool(filtered_dict),
+        'compliant' : compliant,
         'config_details' : details
     }
 

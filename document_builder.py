@@ -221,7 +221,7 @@ class DocumentBuilder:
                         "compliant": False,
                         "show_config": True,
                         "required": ['mysql.user'],
-                        "to_be_tested": False,
+                        "to_be_tested": True,
                         "severity": self.sev["medium"],
                         "description_compliant": "\\textbf{Database uses configuration that enforce secure authentication methods}",
                         "description_noncompliant": "\\textbf{Database doesn't enforce secure authentication methods}",

@@ -100,3 +100,20 @@ def parse_mysql_conf(self, path):
     except FileNotFoundError:
         raise errors.FileNotFound(path) 
     return config
+
+def parse_auth_methods(self):
+    query = """
+    SELECT user, host, plugin
+    FROM mysql.user;
+    """
+
+    rows = exec_sql_query(self.conn, query)
+    parsed_data = {}
+
+    for user, host, plugin in rows:
+        # Pokud ještě user nemá záznam, vytvoříme prázdný seznam
+        if user not in parsed_data:
+            parsed_data[user] = [host, plugin]
+
+    #pprint.pprint(parsed_data)
+    return parsed_data
