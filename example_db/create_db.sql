@@ -3,7 +3,7 @@ START TRANSACTION;
 
 -- Vytvoření uživatelů (nebo rolí)
 CREATE USER IF NOT EXISTS 'public_user'@'%' IDENTIFIED WITH 'mysql_native_password' BY 'password';
-CREATE USER IF NOT EXISTS 'private_user'@'%' IDENTIFIED WITH 'authentication_string' BY 'password';
+CREATE USER IF NOT EXISTS 'private_user'@'%' IDENTIFIED BY 'password';
 CREATE USER IF NOT EXISTS 'admin_user'@'localhost' IDENTIFIED BY 'password';
 
 -- Omezení připojení
