@@ -241,7 +241,7 @@ class DocumentBuilder:
                         "to_be_tested": True,
                         "severity": self.sev["high"],
                         "description_compliant": "\\textbf{User cannot connect without authentication.}",
-                        "description_noncompliant": "Database allows anyone to connect.",
+                        "description_noncompliant": "\\textbf{Database allows some users to connect without password.}",
                         "config_details": "",
                         "test_function": tests.test_trust_authentication
                     },

@@ -308,14 +308,14 @@ def test_trust_authentication(sess):
     compliant = True
 
     for user, values in mysql_auth_methods.items():
-        host, plugin, auth_string = values
+        host, plugin = values
 
         if plugin is "auth_socket":
             insecure_users[user] = [plugin, "insecure"]
             compliant = False
 
     for user, values in mysql_empty_passwords.items():
-        host, plugin = values
+        host, plugin, auth_string = values
 
         insecure_users[user] = [plugin, "No password or NULL"]
         compliant = False
