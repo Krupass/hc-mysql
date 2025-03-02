@@ -302,19 +302,30 @@ def test_insecure_auth_methods(sess):
 
 
 def test_trust_authentication(sess):
-    pg_hba = sess.hba_conf
-    insecure_methods = ["trust"]
-    filtered_dict = {}
-    for key, values in pg_hba.items():
-        filtered_values = [value for value in values if value.get('authentication_method') in insecure_methods]
-        if filtered_values:
-            filtered_dict[key] = filtered_values
+    mysql_auth_methods = parser.parse_auth_methods(sess)
+    mysql_empty_passwords = parser.parse_empty_passwords(sess)
+    insecure_users = {}
+    compliant = True
+
+    for user, values in mysql_auth_methods.items():
+        host, plugin = values
+
+        if plugin is "auth_socket":
+            insecure_users[user] = [plugin, "insecure"]
+            compliant = False
+
+    for user, values in mysql_empty_passwords.items():
+        host, plugin = values
+
+        insecure_users[user] = [plugin, "No password"]
+
     details = ""
-    if bool(filtered_dict):
-        details = latex_g.pg_hba_struct_to_latex(filtered_dict)
+    if bool(insecure_users):
+        details = latex_g.detail_to_latex(insecure_users)
+
     
     return {
-        'compliant' : not bool(filtered_dict),
+        'compliant' : compliant,
         'config_details' : details
     }
 

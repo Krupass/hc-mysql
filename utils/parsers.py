@@ -117,3 +117,19 @@ def parse_auth_methods(self):
 
     #pprint.pprint(parsed_data)
     return parsed_data
+
+
+def parse_empty_passwords(self):
+    query = """
+        SELECT user, host, plugin, authentication_string
+        FROM mysql.user
+        WHERE (authentication_string = '' OR authentication_string IS NULL);"""
+
+    rows = exec_sql_query(self.conn, query)
+    parsed_data = {}
+
+    for user, host, plugin, authentication_string in rows:
+        if user not in parsed_data:
+            parsed_data[user] = [host, plugin, authentication_string]
+
+    return parsed_data
