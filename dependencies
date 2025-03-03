@@ -7,6 +7,7 @@ subprocess
 pprint
 mysql-connector-python
 re
+requests
 pyyaml
 matplotlib
 pylatex

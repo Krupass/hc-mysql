@@ -246,14 +246,14 @@ class DocumentBuilder:
                         "test_function": tests.test_trust_authentication
                     },
                     4: {
-                        "subsection": "Supported version of MySQL",
+                        "subsection": "Latest version of MySQL",
                         "description": "This test verifies whether the database uses the latest software version. "
                                        "Outdated versions could contain security vulnerabilities that could be used "
                                        "by an attacker to compromise the database.",
                         "compliant": False,
                         "show_config": True,
                         "required": ['db_connection'],
-                        "to_be_tested": False,
+                        "to_be_tested": True,
                         "severity": self.sev["low"],
                         "description_compliant": "\\textbf{Database uses latest version of MySQL.}",
                         "description_noncompliant": "Database uses outdated version of MySQL: ",

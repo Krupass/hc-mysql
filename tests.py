@@ -1,6 +1,8 @@
 import os
 import pprint
 import re
+import mysql.connector
+import requests
 from utils.global_logger import logger
 from utils.utils import exec_sql_query
 from utils.utils import get_mysql_version_cmd as get_mysql_version
@@ -355,14 +357,38 @@ def test_if_uses_ldap_or_ad(sess):
     }
 
 def test_software_version(sess):
-    mysql_version = get_mysql_version(sess.config_path)
 
-    def versiontuple(v):
-        return tuple(map(int, (v.split("."))))
+    try:
+        conn = sess.conn
+        cursor = conn.cursor()
+        cursor.execute("SELECT VERSION();")
+        installed_mysql_version = cursor.fetchone()[0]
+        logger().info("Installed MySQL version: ".format(installed_mysql_version))
+    except mysql.connector.Error as err:
+        logger().warning("Error getting MySQL version from SQL query: {}".format(err))
 
-    # zatim je tam napevno naprogramovana nejnovejsi verze. V budoucnu by tam mohl byt call ktery by bral nejnovejsi verzi z nejakeho api nebo tak
-    is_updated = versiontuple(mysql_version) >= versiontuple("8.0.0")
+        installed_mysql_version = get_mysql_version(sess.peth)
+        logger().info("Installed MySQL version: {}".format(installed_mysql_version))
+
+    url = "https://dev.mysql.com/downloads/mysql/"
+    response = requests.get(url)
+    if response.status_code == 200:
+        match = re.search(r"MySQL (\d+\.\d+\.\d+)", response.text)
+        if match:
+            latest_mysql_version = match.group(1)
+    else:
+        latest_mysql_version = "9.2.0"
+
+    logger().info("Latest MySQL version: {}".format(latest_mysql_version))
+
+    is_updated = installed_mysql_version == latest_mysql_version
+    details = ""
+    if is_updated:
+        details = "Latest MySQL version {} is installed.".format(latest_mysql_version)
+    else:
+        details = "Latest MySQL version {} is not installed. Installed MySQL version {}".format(latest_mysql_version, installed_mysql_version)
+
     return {
         'compliant' : is_updated,
-        'config_details' : str(mysql_version)
+        'config_details' : details
     }
