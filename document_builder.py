@@ -255,8 +255,8 @@ class DocumentBuilder:
                         "required": ['db_connection'],
                         "to_be_tested": True,
                         "severity": self.sev["low"],
-                        "description_compliant": "\\textbf{Database uses latest version of MySQL.}",
-                        "description_noncompliant": "Database uses outdated version of MySQL: ",
+                        "description_compliant": "\\textbf{Database uses latest version of MySQL }",
+                        "description_noncompliant": "Database uses outdated version of MySQL ",
                         "config_details": "",
                         "test_function": tests.test_software_version                    
                     },

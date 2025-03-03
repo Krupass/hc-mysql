@@ -386,9 +386,9 @@ def test_software_version(sess):
     is_updated = installed_mysql_version == latest_mysql_version
     details = ""
     if is_updated:
-        details = "Latest MySQL version {} is installed.".format(latest_mysql_version)
+        details = "({}).".format(latest_mysql_version)
     else:
-        details = "Latest MySQL version {} is not installed. Installed MySQL version {}".format(latest_mysql_version, installed_mysql_version)
+        details = "{} instead of latest version {}".format(installed_mysql_version, latest_mysql_version)
 
     return {
         'compliant' : is_updated,
