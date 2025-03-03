@@ -375,7 +375,7 @@ def test_software_version(sess):
     url = "https://dev.mysql.com/downloads/mysql/"
     response = requests.get(url)
     if response.status_code == 200:
-        match = re.search(r"MySQL (\d+\.\d+\.\d+)", response.text)
+        match = re.search(r"MySQL Community Server (\d+\.\d+\.\d+)", response.text)
         if match:
             latest_mysql_version = match.group(1)
     else:
