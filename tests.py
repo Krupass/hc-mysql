@@ -357,6 +357,8 @@ def test_if_uses_ldap_or_ad(sess):
     }
 
 def test_software_version(sess):
+    installed_mysql_version = "Unknown"
+    latest_mysql_version = "Unknown"
 
     try:
         conn = sess.conn
