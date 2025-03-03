@@ -312,7 +312,7 @@ def test_trust_authentication(sess):
     for user, values in mysql_auth_methods.items():
         host, plugin = values
 
-        if plugin is "auth_socket":
+        if plugin == "auth_socket":
             insecure_users[user] = [plugin, "insecure"]
             compliant = False
 
@@ -365,12 +365,10 @@ def test_software_version(sess):
         cursor = conn.cursor()
         cursor.execute("SELECT VERSION();")
         installed_mysql_version = cursor.fetchone()[0]
-        logger().info("Installed MySQL version: ".format(installed_mysql_version))
     except mysql.connector.Error as err:
         logger().warning("Error getting MySQL version from SQL query: {}".format(err))
 
         installed_mysql_version = get_mysql_version(sess.peth)
-        logger().info("Installed MySQL version: {}".format(installed_mysql_version))
 
     url = "https://dev.mysql.com/downloads/mysql/"
     response = requests.get(url)
@@ -381,6 +379,7 @@ def test_software_version(sess):
     else:
         latest_mysql_version = "9.2.0"
 
+    logger().info("Installed MySQL version: {}".format(installed_mysql_version))
     logger().info("Latest MySQL version: {}".format(latest_mysql_version))
 
     is_updated = installed_mysql_version == latest_mysql_version
