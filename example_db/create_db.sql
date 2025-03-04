@@ -3,8 +3,7 @@ START TRANSACTION;
 
 -- Vytvoření uživatelů (nebo rolí)
 CREATE USER IF NOT EXISTS 'public_user'@'%' IDENTIFIED WITH 'mysql_native_password' BY 'password';
-CREATE USER IF NOT EXISTS 'test_user'@'%' IDENTIFIED WITH 'mysql_native_password' BY '';
-CREATE USER IF NOT EXISTS 'test2_user'@'%' IDENTIFIED WITH 'caching_sha2_password';
+CREATE USER IF NOT EXISTS 'test_user'@'%' IDENTIFIED WITH 'caching_sha2_password' BY '';
 CREATE USER IF NOT EXISTS 'private_user'@'%' IDENTIFIED BY 'password';
 CREATE USER IF NOT EXISTS 'admin_user'@'localhost' IDENTIFIED BY 'password';
 
@@ -37,6 +36,7 @@ CREATE TABLE IF NOT EXISTS secret_info (
 
 -- Nastavení oprávnění
 GRANT SELECT ON my_schema.public_info TO 'public_user'@'%';
+GRANT SELECT ON my_schema.public_info TO 'test_user'@'%';
 GRANT SELECT ON my_schema.public_info TO 'private_user'@'%';
 GRANT SELECT ON my_schema.private_info TO 'private_user'@'%';
 
