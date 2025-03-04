@@ -204,8 +204,26 @@ def check_mysql_backup(backup_directory):
     }
     
 
-def check_role_permissions(sess):
-    # added new structure for database privileges
+def check_user_permissions(sess):
+    connection = sess.conn
+    cur = connection.cursor()
+    query = """
+            SELECT user, host, select_priv,insert_priv,
+            update_priv, delete_priv, create_priv, drop_priv, grant_priv
+            FROM mysql.user;"""
+
+    cur.execute(query)
+    result = cur.fetchall()
+    cur.close()
+
+    parsed_data = {}
+
+    for user, host, select_priv, insert_priv, update_priv, delete_priv, create_priv, drop_priv, grant_priv in result:
+        if user not in parsed_data:
+            parsed_data[user] = [host, select_priv, insert_priv, update_priv, delete_priv, create_priv, drop_priv,
+                                 grant_priv]
+
+
 
     return {
         'compliant' : False, 

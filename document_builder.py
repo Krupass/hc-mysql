@@ -270,12 +270,12 @@ class DocumentBuilder:
                             "compliant": False,
                             "show_config": True,
                             "required": ['privileges'],
-                            "to_be_tested": False,
+                            "to_be_tested": True,
                             "severity": self.sev["info"],
                             "description_compliant": "",
                             "description_noncompliant": "",
                             "config_details": "",
-                            "test_function": tests.check_role_permissions
+                            "test_function": tests.check_user_permissions
                     },
                     6: {
                             "subsection": "Check pgcrypto",
