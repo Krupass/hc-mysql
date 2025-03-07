@@ -213,11 +213,12 @@ class DocumentBuilder:
                     },
                     2: {
                         "subsection":   "Insecure authentication methods",
-                        "description":  "This test examines the configuration file 'mysql.user' for the presence of insecure "
-                                        "authentication methods. Specifically, it identifies the use of 'md5' and 'password' methods, "
-                                        "both of which are considered insecure. The 'md5' method employs a deprecated hash function "
-                                        "that has been cryptographically compromised, while the 'password' method transmits credentials "
-                                        "in plaintext, posing significant security risks.",
+                        "description":  "This test examines the 'mysql.user' table for outdated authentication plugins. Specifically, "
+                                        "it identifies the use of 'mysql_old_password', which is highly insecure and has been removed "
+                                        "in modern MySQL versions, and 'mysql_native_password', which relies on the SHA1 hashing algorithm"
+                                        " and is considered less secure than newer authentication methods such as 'caching_sha2_password'. "
+                                        "While 'mysql_native_password' is still widely used, its reliance on SHA1 makes it vulnerable to "
+                                        "cryptographic weaknesses, and its use is discouraged in favor of stronger authentication plugins.",
                         "compliant": False,
                         "show_config": True,
                         "required": ['db_connection'],
@@ -256,7 +257,7 @@ class DocumentBuilder:
                         "to_be_tested": True,
                         "severity": self.sev["low"],
                         "description_compliant": "\\textbf{Database uses latest version of MySQL }",
-                        "description_noncompliant": "Database uses outdated version of MySQL ",
+                        "description_noncompliant": "\\textbf{Database uses outdated version of MySQL }",
                         "config_details": "",
                         "test_function": tests.test_software_version                    
                     },
@@ -278,13 +279,13 @@ class DocumentBuilder:
                             "test_function": tests.check_user_permissions
                     },
                     6: {
-                            "subsection": "Check pgcrypto",
+                            "subsection": "Loadable functions",
                             "description": "Verifies whether the database is capable of encrypting its data on database layer.",
                             "compliant": False,
                             "show_config": True,
                             "required": ['db_connection'],
                             "to_be_tested": False,
-                            "severity": self.sev["low"],
+                            "severity": self.sev["medium"],
                             "description_compliant": "\\textbf{Database has extension pg_crypto installed.}",
                             "description_noncompliant": """Database does not implement the pg_crypto crypto extension,
                                                             be installed using the \\texttt{CREATE EXTENSION IF NOT EXISTS pgcrypto;}.""",

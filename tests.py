@@ -409,5 +409,5 @@ def test_software_version(sess):
 
     return {
         'compliant' : is_updated,
-        'config_details' : details
+        'config_details' : "\\textbf{ " + details + "}"
     }
