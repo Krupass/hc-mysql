@@ -173,3 +173,45 @@ def test_software_version(sess):
         'compliant' : is_updated,
         'config_details' : "\\textbf{ " + details + "}"
     }
+
+def test_user_permissions(sess):
+    return {
+        'compliant': "",
+        'config_details': ""
+    }
+
+def test_loadable_functions(sess):
+    return {
+        'compliant': "",
+        'config_details': ""
+    }
+
+def test_file_access(sess):
+    return {
+        'compliant': "",
+        'config_details': ""
+    }
+
+def test_log_conf(sess):
+    return {
+        'compliant': "",
+        'config_details': ""
+    }
+
+def test_verbose_errors(sess):
+    return {
+        'compliant': "",
+        'config_details': ""
+    }
+
+def test_ssl(sess):
+    return {
+        'compliant': "",
+        'config_details': ""
+    }
+
+def test_super(sess):
+    return {
+        'compliant': "",
+        'config_details': ""
+    }

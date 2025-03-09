@@ -274,7 +274,7 @@ class DocumentBuilder:
                             "description_compliant": "\\textbf{}",
                             "description_noncompliant": "\\textbf{}",
                             "config_details": "",
-                            "test_function": tests.check_user_permissions
+                            "test_function": tests.test_user_permissions
                     },
                     6: {
                             "subsection": "Loadable functions",
@@ -287,7 +287,7 @@ class DocumentBuilder:
                             "description_compliant": "\\textbf{}",
                             "description_noncompliant": "\\textbf{}",
                             "config_details": "",
-                            "test_function": tests.check_loadable_functions
+                            "test_function": tests.test_loadable_functions
                     },
                     7: {
                             "subsection": "SQL server allowed to read/write OS files",
@@ -300,7 +300,7 @@ class DocumentBuilder:
                             "description_compliant": "\\textbf{}",
                             "description_noncompliant": "\\textbf{}",
                             "config_details": "",
-                            "test_function": tests.check_file_access
+                            "test_function": tests.test_file_access
                     },
                     8: {
                             "subsection": "Log configuration",
@@ -313,7 +313,7 @@ class DocumentBuilder:
                             "description_compliant": "\\textbf{}",
                             "description_noncompliant": "\\textbf{}",
                             "config_details": "",
-                            "test_function": tests.check_log_conf
+                            "test_function": tests.test_log_conf
                     },
                     9: {
                             "subsection": "Client side errors",
@@ -326,7 +326,7 @@ class DocumentBuilder:
                             "description_compliant": "\\textbf{}",
                             "description_noncompliant": "\\textbf{}",
                             "config_details": "",
-                            "test_function": tests.check_verbose_errors
+                            "test_function": tests.test_verbose_errors
                     },
                     10: {
                             "subsection": "Configuration of SSL",
@@ -339,7 +339,7 @@ class DocumentBuilder:
                             "description_compliant": "\\textbf{}",
                             "description_noncompliant": "\\textbf{}",
                             "config_details": "",
-                            "test_function": tests.check_ssl
+                            "test_function": tests.test_ssl
                     },
                     11: {
                             "subsection": "SUPER privileges",
@@ -352,7 +352,7 @@ class DocumentBuilder:
                             "description_compliant": "\\textbf{}",
                             "description_noncompliant": "\\textbf{}",
                             "config_details": "",
-                            "test_function": tests.check_super
+                            "test_function": tests.test_super
                     },
                 },
             }

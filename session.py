@@ -6,7 +6,6 @@ import mysql.connector
 from document_builder import DocumentBuilder
 from utils.global_logger import logger
 from utils.utils import convert_dict_to_yaml
-from tests import check_pg_crypto_extension
 from utils.errors import InvalidPgHbaConfigFormat
 from utils.utils import exec_sql_query
 from utils.utils import sub_array
