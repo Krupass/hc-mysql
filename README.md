@@ -1,3 +1,16 @@
+# Diploma Thesis
+
+This project focuses on evaluating the security configuration of a MySQL database system, ensuring it aligns with best practices. The tool analyzes the setup and presents its findings in a clear and structured manner.
+The generated report provides essential insights to help identify and rectify potential misconfigurations.
+
+## How to Run
+
+To execute the security checks, ensure that a MySQL database instance is running. Database credentials can be supplied using command-line arguments.
+
+For tests requiring access to configuration files (e.g., `my.ini`), specify their location using the `--path` flag. If no path is provided, the default configuration directory will be used.  
+
+If the necessary database connection or configuration files are not accessible, the tool will automatically skip tests dependent on these resources.
+
 ### Installation
 
 ```sh
@@ -8,16 +21,17 @@ cd $_
 ### Windows
 
 For Non-existing database :
-```ps
+```sh
 python .\main.py --setup-db --user <username> --password <password> --host <host> --port <port>
 ```
+
 In case that all values are default you can use just:
-```ps
+```sh
 python .\main.py --setup-db 
 ```
 
 For already existing database:
-```ps
+```sh
 python .\main.py --user <username> --password <password> --host <host> --port <port>
 ```
 
@@ -41,15 +55,15 @@ python .\main.py --user <username> --password <password> --host <host> --port <p
 - pdflatex (optional)
 
 ### Python Libraries
--- argparse
--- configparser
--- logging
--- mysql-connector-python
--- requests
--- pyyaml
--- matplotlib
--- pylatex
--- psutil
+- argparse
+- configparser
+- logging
+- mysql-connector-python
+- requests
+- pyyaml
+- matplotlib
+- pylatex
+- psutil
 #### Installation
 Following commands iterate over `dependencies` file stored in this directory and performs `pip install` in order to install them.
 ##### Windows CMD
