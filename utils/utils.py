@@ -40,7 +40,6 @@ def get_mysql_version(base_path):
         if "Server" in item and os.path.isdir(os.path.join(base_path, item))
     ]
     version = ''.join(folder)
-    # todo: choose latest version?
     if len(dir) == -1:
         logger().warning("No mysql version installed")
         exit("No mysql version installed")
