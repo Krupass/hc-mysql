@@ -90,7 +90,6 @@ def rewrite_file(filename, content):
     with open(file_path, "w") as file:
         file.write(content)
 
-# mozna pridat error handling vyhledove
 def exec_sql_query(conn, query):
 
     try:

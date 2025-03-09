@@ -32,49 +32,6 @@ def parse_database_privileges(self):
             })
     #pprint.pprint(parsed_data)
     return parsed_data
-
-
-def parse_pg_hba_config(self, path):
-    pg_hba_config = {}
-
-    try:
-        with open(path, 'r') as file:
-            for line in file:
-                line = line.strip()
-                # skip comments
-                if not line or line.startswith('#'):
-                    continue
-                if '#' in line:
-                    line = line.split('#', 1)[0].strip()
-
-                parts = line.split()
-                
-                # handle local differently as it has a different structure
-                if parts[0] == 'local' and len(parts) < 4:
-                    raise errors.InvalidPgHbaConfigFormat
-                if parts[0].startswith('host') and len(parts) < 5:
-                    raise errors.InvalidPgHbaConfigFormat
-
-                entry_type = parts[0]
-                database = parts[1]
-                user = parts[2]
-                address = parts[3] if entry_type.startswith('host') else ''
-                authentication_method = parts[4] if entry_type.startswith('host') else parts[3]
-
-                if database not in pg_hba_config:
-                    pg_hba_config[database] = []
-
-                pg_hba_config[database].append({
-                    'type': entry_type,
-                    'user': user,
-                    'address': address,
-                    'authentication_method': authentication_method
-                })
-
-    except FileNotFoundError:
-        raise errors.FileNotFound(path)
-
-    return pg_hba_config
     
 def parse_mysql_conf(self, path):
     config = {}

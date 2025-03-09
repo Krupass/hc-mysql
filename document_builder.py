@@ -190,8 +190,6 @@ class DocumentBuilder:
         self.technical_details = latex_code
 
 
-# todo: je potreba pridat dalsi dva parametry: HOTOVO jeden bude nahrada za to be tested; bude obsahovat, ktere struktury session jsou potreba k testovani. 
-                                            #   druhy bude severita nalezu
     def get_document_by_lang(self, language):
             document_data = {
                 "en": {
@@ -273,8 +271,8 @@ class DocumentBuilder:
                             "required": ['privileges'],
                             "to_be_tested": True,
                             "severity": self.sev["info"],
-                            "description_compliant": "",
-                            "description_noncompliant": "",
+                            "description_compliant": "\\textbf{}",
+                            "description_noncompliant": "\\textbf{}",
                             "config_details": "",
                             "test_function": tests.check_user_permissions
                     },
@@ -286,89 +284,75 @@ class DocumentBuilder:
                             "required": ['db_connection'],
                             "to_be_tested": False,
                             "severity": self.sev["medium"],
-                            "description_compliant": "\\textbf{Database has extension pg_crypto installed.}",
-                            "description_noncompliant": """Database does not implement the pg_crypto crypto extension,
-                                                            be installed using the \\texttt{CREATE EXTENSION IF NOT EXISTS pgcrypto;}.""",
+                            "description_compliant": "\\textbf{}",
+                            "description_noncompliant": "\\textbf{}",
                             "config_details": "",
-                            "test_function": tests.check_pg_crypto_extension
+                            "test_function": tests.check_loadable_functions
                     },
                     7: {
-                            "subsection": "Role pg_execute_server_program enabled",
-                            "description": "Verifies that no user has role that enables command execution.",
-                            "compliant": False,
-                            "show_config": True,
-                            "required": ['db_connection'],
-                            "to_be_tested": False,
-                            "severity": self.sev["info"],
-                            "description_compliant": "\\textbf{No users with pg\_execute\_server\_program were found.}",
-                            "description_noncompliant": "Following users have the ability to execute operating system commands from SQL queries:\n",
-                            "config_details": "",
-                            "test_function": tests.check_if_user_has_pg_execute_server_program
-                    },
-                    8: {
-                            "subsection": "SQL server allowed to read or write operating system files",
+                            "subsection": "SQL server allowed to read/write OS files",
                             "description": "Tests whether the database is able to access OS files.",
                             "compliant": False,
                             "show_config": True,
                             "required": ['db_connection'],
                             "to_be_tested": False,
                             "severity": self.sev["info"],
-                            "description_compliant": "",
-                            "description_noncompliant": "",
+                            "description_compliant": "\\textbf{}",
+                            "description_noncompliant": "\\textbf{}",
                             "config_details": "",
-                            "test_function": tests.check_pg_file_access
+                            "test_function": tests.check_file_access
                     },
-                    9: {
+                    8: {
                             "subsection": "Log configuration",
                             "description": "Verifies that the log configuration is correct.",
                             "compliant": False,
                             "show_config": True,
-                            "required": ['my.cnf'],
+                            "required": ['my.ini'],
                             "to_be_tested": False,
                             "severity": self.sev["info"],
-                            "description_compliant": "",
-                            "description_noncompliant": "",
+                            "description_compliant": "\\textbf{}",
+                            "description_noncompliant": "\\textbf{}",
                             "config_details": "",
-                            "test_function": tests.check_log_configuration
+                            "test_function": tests.check_log_conf
                     },
-                    10: {
+                    9: {
                             "subsection": "Client side errors",
                             "description": "Verifies that the database doesnt return errors to the client side.",
                             "compliant": False,
                             "show_config": True,
-                            "required": ['my.cnf'],
+                            "required": ['my.ini'],
                             "to_be_tested": False,
                             "severity": self.sev["low"],
-                            "description_compliant": "",
-                            "description_noncompliant": "",
+                            "description_compliant": "\\textbf{}",
+                            "description_noncompliant": "\\textbf{}",
                             "config_details": "",
                             "test_function": tests.check_verbose_errors
                     },
-                    11: {
+                    10: {
                             "subsection": "Configuration of SSL",
-                            "description": "Verifies that has the correct ssl configuration in my.cnf",
+                            "description": "Verifies that has the correct ssl configuration in my.ini",
                             "compliant": False,
                             "show_config": True,
-                            "required": ['my.cnf'],
+                            "required": ['my.ini'],
                             "to_be_tested": False,
-                            "severity": self.sev["medium"],
-                            "description_compliant": "",
-                            "description_noncompliant": "",
+                            "severity": self.sev["info"],
+                            "description_compliant": "\\textbf{}",
+                            "description_noncompliant": "\\textbf{}",
                             "config_details": "",
-                            "test_function": tests.check_if_ssl_is_enabled
+                            "test_function": tests.check_ssl
                     },
-                    12: {
-                            "subsection": "Unlimited superuser access",
+                    11: {
+                            "subsection": "SUPER privileges",
                             "description": "This test checks superuser accounts, and verifies whether they have limited access or not.",
                             "compliant": False,
                             "show_config": True,
                             "required": ['privileges'],
                             "to_be_tested": False,
                             "severity": self.sev["info"],
-                            "description_compliant": "",
-                            "description_noncompliant": "",
+                            "description_compliant": "\\textbf{}",
+                            "description_noncompliant": "\\textbf{}",
                             "config_details": "",
-                            "test_function": tests.unlimited_superuser_access
+                            "test_function": tests.check_super
                     },
                 },
             }
