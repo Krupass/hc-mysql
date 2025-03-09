@@ -41,15 +41,15 @@ python .\main.py --user <username> --password <password> --host <host> --port <p
 - pdflatex (optional)
 
 ### Python Libraries
-argparse
-configparser
-logging
-mysql-connector-python
-requests
-pyyaml
-matplotlib
-pylatex
-psutil
+-- argparse
+-- configparser
+-- logging
+-- mysql-connector-python
+-- requests
+-- pyyaml
+-- matplotlib
+-- pylatex
+-- psutil
 #### Installation
 Following commands iterate over `dependencies` file stored in this directory and performs `pip install` in order to install them.
 ##### Windows CMD
