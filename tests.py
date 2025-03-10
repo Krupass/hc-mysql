@@ -153,20 +153,6 @@ def test_software_version(sess):
     }
 
 def test_user_permissions(sess):
-    con = sess.conn
-    query = """
-                SELECT user, host, select_priv,insert_priv,
-                update_priv, delete_priv, create_priv, drop_priv, grant_priv
-                FROM mysql.user;"""
-
-    result = exec_sql_query(con, query)
-    parsed_data = {}
-
-    for user, host, select_priv, insert_priv, update_priv, delete_priv, create_priv, drop_priv, grant_priv in result:
-        if user not in parsed_data:
-            parsed_data[user] = [host, select_priv, insert_priv, update_priv, delete_priv, create_priv, drop_priv,
-                                 grant_priv]
-
     return {
         'compliant': False,
         'config_details': latex_g.privilege_dict_to_latex_table(sess.privileges)
@@ -203,7 +189,19 @@ def test_ssl(sess):
     }
 
 def test_super(sess):
+    con = sess.conn
+    query = """SELECT User, Host, Super_priv
+               FROM mysql.user
+               WHERE Super_priv = 'Y';"""
+
+    result = exec_sql_query(con, query)
+    parsed_data = {}
+
+    for user, host, super_priv in result:
+        if user not in parsed_data:
+            parsed_data[user] = [host, super_priv]
+
     return {
-        'compliant': "",
-        'config_details': ""
+        'compliant': False,
+        'config_details': latex_g.detail_to_latex(parsed_data)
     }
