@@ -350,17 +350,17 @@ class DocumentBuilder:
                             "required": ['db_connection'],
                             "to_be_tested": True,
                             "severity": self.sev["info"],
-                            "description_compliant": "\\textbf{There are no users with SUPER privileges in the database. "
+                            "description_compliant": "There are no users with \\textbf{SUPER} privileges in the database. "
                                                      "This improves security by preventing unauthorized changes to "
                                                      "global settings and system operations. If administrative access "
                                                      "is required, consider granting more specific privileges instead "
-                                                     "of SUPER.}",
-                            "description_noncompliant": "\\textbf{The following users have SUPER privileges, which "
+                                                     "of \\textbf{SUPER}.",
+                            "description_noncompliant": "The following users have \\textbf{SUPER} privileges, which "
                                                         "grant them extensive control over the MySQL server. This "
                                                         "privilege allows modifying global settings, managing "
                                                         "replication, and terminating processes. It should be "
                                                         "restricted to administrative users only. Consider "
-                                                        "reviewing and revoking SUPER where it is not necessary.}",
+                                                        "reviewing and revoking \\textbf{SUPER} where it is not necessary.",
                             "config_details": "",
                             "test_function": tests.test_super
                     },

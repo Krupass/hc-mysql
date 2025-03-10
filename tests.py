@@ -77,7 +77,7 @@ def test_insecure_auth_methods(sess):
 
     details = ""
     if bool(user_plugins_sorted):
-        details = latex_g.detail_to_latex(user_plugins_sorted)
+        details = latex_g.detail_to_latex(user_plugins_sorted, "User", "Host", "Plugin")
     
     return {
         'compliant' : compliant,
@@ -106,7 +106,7 @@ def test_trust_authentication(sess):
 
     details = ""
     if bool(insecure_users):
-        details = latex_g.detail_to_latex(insecure_users)
+        details = latex_g.detail_to_latex(insecure_users, "User", "Plugin", "Password")
 
     
     return {
@@ -202,7 +202,7 @@ def test_super(sess):
             if user not in parsed_data:
                 parsed_data[user] = [host, super_priv]
 
-        details = latex_g.detail_to_latex(parsed_data)
+        details = latex_g.detail_to_latex(parsed_data, "User", "Host", "SUPER")
         compliant = False
     else:
         compliant = True
