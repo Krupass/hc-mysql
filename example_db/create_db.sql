@@ -45,5 +45,7 @@ GRANT ALL PRIVILEGES ON my_schema.private_info TO 'admin_user'@'localhost';
 GRANT ALL PRIVILEGES ON my_schema.secret_info TO 'admin_user'@'localhost';
 GRANT SUPER ON *.* TO 'admin_user'@'localhost';
 
+FLUSH PRIVILEGES;
+
 -- Dokončení transakce
 COMMIT;

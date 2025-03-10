@@ -343,14 +343,24 @@ class DocumentBuilder:
                     },
                     11: {
                             "subsection": "SUPER privileges",
-                            "description": "This test checks superuser accounts, and verifies whether they have limited access or not.",
+                            "description": "This test checks which users have the SUPER privilege in the MySQL database. "
+                                           "The test queries the mysql.user table.",
                             "compliant": False,
                             "show_config": True,
                             "required": ['db_connection'],
                             "to_be_tested": True,
                             "severity": self.sev["info"],
-                            "description_compliant": "\\textbf{}",
-                            "description_noncompliant": "\\textbf{}",
+                            "description_compliant": "\\textbf{There are no users with SUPER privileges in the database. "
+                                                     "This improves security by preventing unauthorized changes to "
+                                                     "global settings and system operations. If administrative access "
+                                                     "is required, consider granting more specific privileges instead "
+                                                     "of SUPER.}",
+                            "description_noncompliant": "\\textbf{The following users have SUPER privileges, which "
+                                                        "grant them extensive control over the MySQL server. This "
+                                                        "privilege allows modifying global settings, managing "
+                                                        "replication, and terminating processes. It should be "
+                                                        "restricted to administrative users only. Consider "
+                                                        "reviewing and revoking SUPER where it is not necessary.}",
                             "config_details": "",
                             "test_function": tests.test_super
                     },

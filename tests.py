@@ -197,11 +197,18 @@ def test_super(sess):
     result = exec_sql_query(con, query)
     parsed_data = {}
 
-    for user, host, super_priv in result:
-        if user not in parsed_data:
-            parsed_data[user] = [host, super_priv]
+    if result:
+        for user, host, super_priv in result:
+            if user not in parsed_data:
+                parsed_data[user] = [host, super_priv]
+
+        details = latex_g.detail_to_latex(parsed_data)
+        compliant = False
+    else:
+        compliant = True
+        details = ""
 
     return {
-        'compliant': False,
-        'config_details': latex_g.detail_to_latex(parsed_data)
+        'compliant': compliant,
+        'config_details': details
     }
