@@ -183,9 +183,71 @@ def test_verbose_errors(sess):
     }
 
 def test_ssl(sess):
+    compliant = False
+    con = sess.conn
+    query = """SHOW VARIABLES 
+                LIKE 'have_ssl';"""
+
+    result = exec_sql_query(con, query)
+
+    variable, value = result
+
+    if variable == 'have_ssl':
+        if value == 'YES':
+            details = "SSL is allowed."
+            compliant = True
+        else:
+            details = "SSL isn't active."
+            compliant = False
+    else:
+        details = ""
+        logger().warning("Variable 'have_ssl' not found.")
+
+    query = """SHOW VARIABLES
+                WHERE Variable_name 
+                IN ('ssl_ca', 'ssl_cert', 'ssl_key');"""
+
+    result = exec_sql_query(con, query)
+
+    latex_table = "\\begin{center}\n\\begin{tabular}{|l|l|}\n\\hline\n"
+    latex_table += "\\textbf{Variable_name} & \\textbf{Value} \\\\ \\hline\n"
+
+    for variable, value in result:
+        if variable == 'ssl_ca':
+            if value == '' or value == 'NULL':
+                details = details + (" SSL Certificate Authority (CA) is missing or not configured. "
+                                     "MySQL will not validate client certificates, which may reduce security.")
+                if compliant:
+                    compliant = False
+            else:
+                details = details + (" SSL Certificate Authority (CA) is correctly configured. "
+                                     "MySQL can verify client certificates.")
+        elif variable == 'ssl_cert':
+            if value == '' or value == 'NULL':
+                details = details + (" SSL certificate is missing or not configured. "
+                                     "MySQL cannot establish encrypted connections.")
+                if compliant:
+                    compliant = False
+            else:
+                details = details + " SSL certificate is correctly set."
+        elif variable == 'ssl_key':
+            if value == '' or value == 'NULL':
+                details = details + (" SSL private key is missing or not configured. "
+                                     "MySQL cannot use SSL for encrypted connections.")
+                if compliant:
+                    compliant = False
+            else:
+                details = details + " SSL private key is correctly set."
+
+        latex_row = f"{latex_g.escape_latex(variable)} & {latex_g.escape_latex(value)} \\\\ \\hline\n"
+        latex_table += latex_row
+
+    latex_table += "\\end{tabular}"
+    latex_table += "\\end{center}\n"
+
     return {
-        'compliant': "",
-        'config_details': ""
+        'compliant': compliant,
+        'config_details': details
     }
 
 def test_super(sess):
