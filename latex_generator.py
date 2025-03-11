@@ -21,7 +21,7 @@ def mysql_conf_dict_to_latex_table(data):
     return latex_table
 
 def privilege_dict_to_latex_table(privilege_dict):
-    latex_table = "\\begin{tabular}{|l|l|l|p{5cm}|}\n\\hline\n"
+    latex_table = "\\begin{tabular}{|l|l|l|p{4cm}|}\n\\hline\n"
     latex_table += "\\textbf{User Type} & \\textbf{Table Schema} & \\textbf{Table Name} & \\textbf{Privilege Types} \\\\\n\\hline\n"
     
     for user_type, privileges in privilege_dict.items():
