@@ -190,12 +190,12 @@ def test_ssl(sess):
 
     result = exec_sql_query(con, query)
 
-    variable, value = result
+    variable, value = result[0]
 
     if variable == 'have_ssl':
         if value == 'YES':
             details = "SSL is allowed."
-            compliant = True
+            compliant = False
         else:
             details = "SSL isn't active."
             compliant = False
@@ -244,6 +244,8 @@ def test_ssl(sess):
 
     latex_table += "\\end{tabular}"
     latex_table += "\\end{center}\n"
+
+    details = details + "\n" + latex_table
 
     return {
         'compliant': compliant,
