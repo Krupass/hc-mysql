@@ -330,7 +330,8 @@ class DocumentBuilder:
                     },
                     10: {
                             "subsection": "Configuration of SSL",
-                            "description": "Verifies that has the correct ssl configuration in my.ini",
+                            "description": "This test verifies whether MySQL has SSL enabled. Additionally, it ensures "
+                                           "that the required SSL variables are correctly configured.",
                             "compliant": False,
                             "show_config": True,
                             "required": ['db_connection'],

@@ -102,7 +102,7 @@ class Session():
                 continue
             output = data['test_function'](self)
             logger().info(f"ran test function: {data['test_function'].__name__} with output: {output}")
-            if output['compliant'] == False:
-                data['config_details'] = str(output['config_details'])
+            #if output['compliant'] == False:
+            data['config_details'] = str(output['config_details'])
             data['compliant'] = output['compliant']
 

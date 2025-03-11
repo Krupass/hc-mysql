@@ -210,7 +210,7 @@ def test_ssl(sess):
     result = exec_sql_query(con, query)
 
     latex_table = "\\begin{center}\n\\begin{tabular}{|l|l|}\n\\hline\n"
-    latex_table += "\\textbf{Variable\_name} & \\textbf{Value} \\\\ \\hline\n"
+    latex_table += "\\textbf{Variable name} & \\textbf{Value} \\\\ \\hline\n"
 
     for variable, value in result:
         if variable == 'ssl_ca':
