@@ -25,7 +25,7 @@ def test_transit_encryption(sess):
     for row in result:
         user, host, ssl_type = row
         if not user.strip().startswith("mysql."):
-            if ssl_type.strip().lower() == "x509" or ssl_type.strip().lower() == "ssl":
+            if ssl_type.strip().lower() == "x509" or ssl_type.strip().lower() == "ssl" or ssl_type.strip().lower() == "any":
                 compliant = True
                 print("User: " + user.strip() + " has ssl_type: " + ssl_type.strip() + " and is correctly setup.")
             else:
@@ -195,7 +195,7 @@ def test_ssl(sess):
     if variable == 'have_ssl':
         if value == 'YES':
             details = "SSL is allowed."
-            compliant = False
+            compliant = True
         else:
             details = "SSL isn't active."
             compliant = False
@@ -210,7 +210,7 @@ def test_ssl(sess):
     result = exec_sql_query(con, query)
 
     latex_table = "\\begin{center}\n\\begin{tabular}{|l|l|}\n\\hline\n"
-    latex_table += "\\textbf{Variable_name} & \\textbf{Value} \\\\ \\hline\n"
+    latex_table += "\\textbf{Variable\_name} & \\textbf{Value} \\\\ \\hline\n"
 
     for variable, value in result:
         if variable == 'ssl_ca':
