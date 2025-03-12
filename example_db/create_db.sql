@@ -46,6 +46,8 @@ GRANT ALL PRIVILEGES ON my_schema.secret_info TO 'admin_user'@'localhost';
 GRANT SUPER ON *.* TO 'admin_user'@'localhost';
 
 FLUSH PRIVILEGES;
+-- Nastavení podrobosti hlášení chyb
+SET GLOBAL log_error_verbosity = 3
 
 -- Dokončení transakce
 COMMIT;
