@@ -317,8 +317,8 @@ class DocumentBuilder:
                     },
                     9: {
                             "subsection": "Client side errors",
-                            "description": "This test checks the log\\_error\\_verbosity setting on the MySQL server to "
-                                           "determine if error messages are securely configured. The log\\_error\\_verbosity"
+                            "description": "This test checks the error verbosity setting on the MySQL server to "
+                                           "determine if error messages are securely configured. The error verbosity"
                                            " variable controls the level of detail included in error logs. A higher "
                                            "verbosity level may expose sensitive information, making it easier "
                                            "for attackers to gather insights about the database structure, users, or "
@@ -330,10 +330,10 @@ class DocumentBuilder:
                             "severity": self.sev["low"],
                             "description_compliant": "Client-side error logging is properly configured. "
                                                      "Only critical errors are recorded in the logs, minimizing "
-                                                     "the risk of information leakage.",
+                                                     "the risk of information leakage.\\n",
                             "description_noncompliant": "Client-side error logging is too verbose. "
                                                         "The current setting allows warnings or informational "
-                                                        "messages to be recorded, which may expose sensitive details.",
+                                                        "messages to be recorded, which may expose sensitive details.\\n",
                             "config_details": "",
                             "test_function": tests.test_verbose_errors
                     },

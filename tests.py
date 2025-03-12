@@ -182,7 +182,7 @@ def test_verbose_errors(sess):
     con = sess.conn
     query = """SHOW VARIABLES LIKE 'log_error_verbosity';"""
 
-    result = con.execute(query)
+    result =  exec_sql_query(con, query)
 
     variable, value = result[0]
 
