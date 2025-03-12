@@ -47,7 +47,7 @@ GRANT SUPER ON *.* TO 'admin_user'@'localhost';
 
 FLUSH PRIVILEGES;
 -- Nastavení podrobosti hlášení chyb
-SET GLOBAL log_error_verbosity = 3
+SET GLOBAL log_error_verbosity = 3;
 
 -- Dokončení transakce
 COMMIT;

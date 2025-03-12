@@ -330,10 +330,10 @@ class DocumentBuilder:
                             "severity": self.sev["low"],
                             "description_compliant": "Client-side error logging is properly configured. "
                                                      "Only critical errors are recorded in the logs, minimizing "
-                                                     "the risk of information leakage.\\n",
+                                                     "the risk of information leakage.\n",
                             "description_noncompliant": "Client-side error logging is too verbose. "
                                                         "The current setting allows warnings or informational "
-                                                        "messages to be recorded, which may expose sensitive details.\\n",
+                                                        "messages to be recorded, which may expose sensitive details.\n",
                             "config_details": "",
                             "test_function": tests.test_verbose_errors
                     },
