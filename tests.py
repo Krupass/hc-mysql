@@ -3,6 +3,8 @@ import pprint
 import re
 import mysql.connector
 import requests
+
+from latex_generator import escape_latex
 from utils.global_logger import logger
 from utils.utils import exec_sql_query
 from utils.utils import get_mysql_version_cmd as get_mysql_version
@@ -173,17 +175,17 @@ def test_file_access(sess):
     directory = exec_sql_query(con, query)
 
     if directory == "":
-        logger().warning("Unrestricted write/read access to OS.")
+        logger().warning("Unrestricted write/read access to files.")
         compliant = False
-        details = "SQL server has unrestricted write/read access to OS files."
+        details = "\\textbf{SQL server has unrestricted write/read access to files.}"
     elif directory == "NULL" or None:
-        logger().info("No access to OS files.")
+        logger().info("No access to files.")
         compliant = True
-        details = "SQL server has no access to OS files."
+        details = "SQL server has no access to files."
     else:
-        logger().info("Access to OS files in directory: {}".format(directory))
+        logger().info("Access to files in directory: {}".format(directory))
         compliant = True
-        details = "SQL server has access to files in directory {}.".format(directory)
+        details = "SQL server has access to files in directory {}.".format(latex_g.escape_latex(directory[0][0]))
 
 
     query = """SELECT User, Host, File_priv
@@ -194,9 +196,9 @@ def test_file_access(sess):
     parsed_data = {}
 
     if result == "":
-        details = details + " No user has privilege to read/write to OS files."
+        details = details + " No user has privilege to read/write to files."
     else:
-        details = details + " Users in following table have privilege to read/write to OS files."
+        details = details + " Users in following table have privilege to read/write to files."
         for user, host, file_priv in result:
             if user not in parsed_data:
                 parsed_data[user] = [host, file_priv]

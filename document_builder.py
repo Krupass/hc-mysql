@@ -290,8 +290,9 @@ class DocumentBuilder:
                             "test_function": tests.test_loadable_functions
                     },
                     7: {
-                            "subsection": "SQL server allowed to read/write OS files",
-                            "description": "Tests whether the database is able to access OS files.",
+                            "subsection": "File system access",
+                            "description": "Tests that the MySQL server is properly configured to restrict file system "
+                                           "access and that only authorized users have the FILE privilege",
                             "compliant": False,
                             "show_config": True,
                             "required": ['db_connection'],
