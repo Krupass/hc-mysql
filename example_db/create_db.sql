@@ -44,10 +44,12 @@ GRANT ALL PRIVILEGES ON my_schema.public_info TO 'admin_user'@'localhost';
 GRANT ALL PRIVILEGES ON my_schema.private_info TO 'admin_user'@'localhost';
 GRANT ALL PRIVILEGES ON my_schema.secret_info TO 'admin_user'@'localhost';
 GRANT SUPER ON *.* TO 'admin_user'@'localhost';
+GRANT FILE ON *.* TO 'admin_user'@'localhost';
 
-FLUSH PRIVILEGES;
 -- Nastavení podrobosti hlášení chyb
 SET GLOBAL log_error_verbosity = 3;
+
+FLUSH PRIVILEGES;
 
 -- Dokončení transakce
 COMMIT;

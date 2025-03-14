@@ -165,9 +165,52 @@ def test_loadable_functions(sess):
     }
 
 def test_file_access(sess):
+    compliant = False
+    details = ""
+    con = sess.conn
+    query = """SELECT @@global.secure_file_priv';"""
+
+    directory = exec_sql_query(con, query)
+
+    if directory is not None:
+        if directory.strip() == "":
+            logger().warning("Unrestricted write/read access to OS.")
+            compliant = False
+            details = "SQL server has unrestricted write/read access to OS files."
+        elif directory.strip().lower() == "null":
+            logger().info("No access to OS files.")
+            compliant = True
+            details = "SQL server has no access to OS files."
+        else:
+            logger().info("Access to OS files in directory: {}".format(directory.strip()))
+            compliant = True
+            details = "SQL server has access to files in directory {}.".format(directory.strip())
+
+    else:
+        logger().warning("Unrestricted write/read access to OS files (None).")
+        compliant = False
+        details = "SQL server has unrestricted write/read access to OS files."
+
+    query = """SELECT User, Host, File_priv
+                   FROM mysql.user
+                   WHERE File_priv = 'Y';"""
+
+    result = exec_sql_query(con, query)
+    parsed_data = {}
+
+    if result == "":
+        details = details + " No user has privilege to read/write to OS files."
+    else:
+        details = details + " Users in following table have privilege to read/write to OS files."
+        for user, host, file_priv in result:
+            if user not in parsed_data:
+                parsed_data[user] = [host, file_priv]
+
+        details = details + "\n" + latex_g.detail_to_latex(parsed_data, "User", "Host", "File_priv")
+
     return {
-        'compliant': "",
-        'config_details': ""
+        'compliant': compliant,
+        'config_details': details
     }
 
 def test_log_conf(sess):
