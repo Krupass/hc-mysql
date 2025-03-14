@@ -174,16 +174,16 @@ def test_file_access(sess):
 
     directory = exec_sql_query(con, query)
 
-    if directory == "":
+    if directory[0][0] == "":
         logger().warning("Unrestricted write/read access to files.")
         compliant = False
         details = "\\textbf{SQL server has unrestricted write/read access to files.}"
-    elif directory == "NULL" or None:
+    elif directory[0][0] == "NULL" or None:
         logger().info("No access to files.")
         compliant = True
         details = "SQL server has no access to files."
     else:
-        logger().info("Access to files in directory: {}".format(directory))
+        logger().info("Access to files in directory: {}".format(directory[0][0]))
         compliant = True
         details = "SQL server has access to files in directory {}.".format(latex_g.escape_latex(directory[0][0]))
 
