@@ -37,7 +37,7 @@ def detail_to_latex(sorted_dict, first, second, third):
     latex_table = ["\\begin{center}"]
     latex_table.append("\\begin{tabular}{|l|l|l|}")
     latex_table.append("\\hline")
-    latex_table.append("\\textbf{" + first + "} & \\textbf{" + second + "} & \\textbf{" + third + "} \\\\ \\hline")
+    latex_table.append("\\textbf{" + escape_latex(first) + "} & \\textbf{" + escape_latex(second) + "} & \\textbf{" + escape_latex(third) + "} \\\\ \\hline")
     for user, values in sorted_dict.items():
         plugin, security = values
         latex_row = f"{escape_latex(user)} & {escape_latex(plugin)} & {escape_latex(security)} \\\\ \\hline"

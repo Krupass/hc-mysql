@@ -168,28 +168,23 @@ def test_file_access(sess):
     compliant = False
     details = ""
     con = sess.conn
-    query = """SELECT @@global.secure_file_priv';"""
+    query = """SELECT @@global.secure_file_priv;"""
 
     directory = exec_sql_query(con, query)
 
-    if directory is not None:
-        if directory.strip() == "":
-            logger().warning("Unrestricted write/read access to OS.")
-            compliant = False
-            details = "SQL server has unrestricted write/read access to OS files."
-        elif directory.strip().lower() == "null":
-            logger().info("No access to OS files.")
-            compliant = True
-            details = "SQL server has no access to OS files."
-        else:
-            logger().info("Access to OS files in directory: {}".format(directory.strip()))
-            compliant = True
-            details = "SQL server has access to files in directory {}.".format(directory.strip())
-
-    else:
-        logger().warning("Unrestricted write/read access to OS files (None).")
+    if directory == "":
+        logger().warning("Unrestricted write/read access to OS.")
         compliant = False
         details = "SQL server has unrestricted write/read access to OS files."
+    elif directory == "NULL" or None:
+        logger().info("No access to OS files.")
+        compliant = True
+        details = "SQL server has no access to OS files."
+    else:
+        logger().info("Access to OS files in directory: {}".format(directory))
+        compliant = True
+        details = "SQL server has access to files in directory {}.".format(directory)
+
 
     query = """SELECT User, Host, File_priv
                    FROM mysql.user
