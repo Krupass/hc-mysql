@@ -229,11 +229,11 @@ def test_log_conf(sess):
 
     if general_log == "on":
         compliant = True
-        details = details + "General logging is on."
+        details = details + "General logging is on. "
     elif general_log == "off":
         compliant = False
         wasFalse = True
-        details = details + "General logging is off."
+        details = details + "General logging is off. "
     else:
         logger().warning("General logging untracked value: {}.".format(general_log))
 
@@ -249,10 +249,10 @@ def test_log_conf(sess):
     if log_raw == "on":
         compliant = False
         wasFalse = True
-        details = details + "Passwords can be exposed because of the log\\_raw setting."
+        details = details + "Passwords can be exposed because of the log\\_raw setting. "
     elif log_raw == "off":
         compliant = True
-        details = details + "Log\\_raw setting doesn't expose passwords."
+        details = details + "Log\\_raw setting doesn't expose passwords. "
     else:
         logger().warning("Log\\_raw setting untracked value: {}.".format(log_raw))
 
@@ -267,11 +267,11 @@ def test_log_conf(sess):
 
     if slow_query_log == "on":
         compliant = True
-        details = details + "Slow query logging is on."
+        details = details + "Slow query logging is on. "
     elif slow_query_log == "off":
         compliant = False
         wasFalse = True
-        details = details + "Slow query logging is off."
+        details = details + "Slow query logging is off. "
     else:
         logger().warning("Slow query logging untracked value: {}".format(slow_query_log))
 
@@ -281,13 +281,15 @@ def test_log_conf(sess):
         result = exec_sql_query(con, query)
         variable, long_query_time = result[0]
 
-    parsed_data["long_query_time"] = long_query_time
+    parsed_data["long_query_time"] = float(long_query_time).__round__(1)
 
-    if long_query_time > 10:
+    if float(long_query_time) > 10:
         compliant = False
         wasFalse = True
+        details = details + "Long query time is too long. "
     else:
         compliant = True
+        details = details + "Long query time reasonably set. "
 
     innodb_strict_mode = sess.my_conf.get("innodb_strict_mode", None)
     if innodb_strict_mode is None:
@@ -313,7 +315,7 @@ def test_log_conf(sess):
 
     return {
         'compliant': compliant,
-        'config_details': details + "\\n" + latex_g.mysql_conf_dict_to_latex_table(parsed_data, "Variable", "Value"),
+        'config_details': details + "\n" + latex_g.mysql_conf_dict_to_latex_table(parsed_data, "Variable", "Value"),
     }
 
 def test_verbose_errors(sess):

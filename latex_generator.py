@@ -12,7 +12,6 @@ def mysql_conf_dict_to_latex_table(data, first, second):
         key = escape_latex(key)
         if isinstance(value, str):
             value = escape_latex(value)
-            value = f"\\texttt{{{value}}}"
 
         latex_table += f"{key} & {value} \\\\\n\\hline\n"
 

@@ -305,7 +305,8 @@ class DocumentBuilder:
                     },
                     8: {
                             "subsection": "Log configuration",
-                            "description": "Verifies that the log configuration is correct.",
+                            "description": "Verifies that the the logging configuration of a MySQL server prevents "
+                                           "sensitive data exposure and ensure compliance with security best practices.",
                             "compliant": False,
                             "show_config": True,
                             "required": ['my.ini', 'db_connection'],
