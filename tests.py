@@ -233,7 +233,7 @@ def test_log_conf(sess):
     elif general_log == "off":
         compliant = False
         wasFalse = True
-        details = details + "General logging is off. "
+        details = details + "\\textbf{General logging is off.} "
     else:
         logger().warning("General logging untracked value: {}.".format(general_log))
 
@@ -249,7 +249,7 @@ def test_log_conf(sess):
     if log_raw == "on":
         compliant = False
         wasFalse = True
-        details = details + "Passwords can be exposed because of the log\\_raw setting. "
+        details = details + "\\textbf{Passwords can be exposed because of the log\\_raw setting.} "
     elif log_raw == "off":
         compliant = True
         details = details + "Log\\_raw setting doesn't expose passwords. "
@@ -271,7 +271,7 @@ def test_log_conf(sess):
     elif slow_query_log == "off":
         compliant = False
         wasFalse = True
-        details = details + "Slow query logging is off. "
+        details = details + "\\textbf{Slow query logging is off.} "
     else:
         logger().warning("Slow query logging untracked value: {}".format(slow_query_log))
 
@@ -286,10 +286,10 @@ def test_log_conf(sess):
     if float(long_query_time) > 10:
         compliant = False
         wasFalse = True
-        details = details + "Long query time is too long. "
+        details = details + "\\textbf{Long query time is too long.} "
     else:
         compliant = True
-        details = details + "Long query time reasonably set. "
+        details = details + "Long query time is set reasonably. "
 
     innodb_strict_mode = sess.my_conf.get("innodb_strict_mode", None)
     if innodb_strict_mode is None:
@@ -306,7 +306,7 @@ def test_log_conf(sess):
     elif innodb_strict_mode == "off":
         compliant = False
         wasFalse = True
-        details = details + "Innodb strict logging is off."
+        details = details + "\\textbf{Innodb strict logging is off.}"
     else:
         logger().warning("InnoDB strict logging untracked value: {}".format(innodb_strict_mode))
 
