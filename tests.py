@@ -218,9 +218,8 @@ def test_log_conf(sess):
 
     parsed_data = {}
 
-    if sess.my_conf["general_log"] is not None:
-        general_log = sess.my_conf["general_log"]
-    else:
+    general_log = sess.my_conf["general_log"]
+    if general_log is None:
         query = """SHOW VARIABLES LIKE 'general_log';"""
         result = exec_sql_query(con, query)
         variable, general_log = result[0]
@@ -238,9 +237,8 @@ def test_log_conf(sess):
     else:
         logger().warning("General logging untracked value: {}.".format(general_log))
 
-    if sess.my_conf["log_raw"] is not None:
-        log_raw = sess.my_conf["log_raw"]
-    else:
+    log_raw = sess.my_conf["log_raw"]
+    if log_raw is None:
         query = """SHOW VARIABLES LIKE 'log_raw';"""
         result = exec_sql_query(con, query)
         variable, log_raw = result[0]
@@ -258,9 +256,8 @@ def test_log_conf(sess):
     else:
         logger().warning("Log\\_raw setting untracked value: {}.".format(log_raw))
 
-    if sess.my_conf["slow_query_log"] is not None:
-        slow_query_log = sess.my_conf["slow_query_log"]
-    else:
+    slow_query_log = sess.my_conf["slow_query_log"]
+    if slow_query_log is None:
         query = """SHOW VARIABLES LIKE 'slow_query_log';"""
         result = exec_sql_query(con, query)
         variable, slow_query_log = result[0]
@@ -278,9 +275,8 @@ def test_log_conf(sess):
     else:
         logger().warning("Slow query logging untracked value: {}".format(slow_query_log))
 
-    if sess.my_conf["long_query_time"] is not None:
-        long_query_time = sess.my_conf["long_query_time"]
-    else:
+    long_query_time = sess.my_conf["long_query_time"]
+    if long_query_time is None:
         query = """SHOW VARIABLES LIKE 'long_query_time';"""
         result = exec_sql_query(con, query)
         variable, long_query_time = result[0]
@@ -293,9 +289,8 @@ def test_log_conf(sess):
     else:
         compliant = True
 
-    if sess.my_conf["innodb_strict_mode"] is not None:
-        innodb_strict_mode = sess.my_conf["innodb_strict_mode"]
-    else:
+    innodb_strict_mode = sess.my_conf["innodb_strict_mode"]
+    if innodb_strict_mode is None:
         query = """SHOW VARIABLES LIKE 'innodb_strict_mode';"""
         result = exec_sql_query(con, query)
         variable, innodb_strict_mode = result[0]
