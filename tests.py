@@ -211,9 +211,114 @@ def test_file_access(sess):
     }
 
 def test_log_conf(sess):
+    compliant = False
+    wasFalse = False
+    details = ""
+    con = sess.conn
+
+    parsed_data = {}
+
+    if sess.my_conf["general_log"] is not None:
+        general_log = sess.my_conf["general_log"]
+    else:
+        query = """SHOW VARIABLES LIKE 'general_log';"""
+        result = exec_sql_query(con, query)
+        variable, general_log = result[0]
+
+    parsed_data["general_log"] = general_log
+    general_log = general_log.strip().lower()
+
+    if general_log == "on":
+        compliant = True
+        details = details + "General logging is on."
+    elif general_log == "off":
+        compliant = False
+        wasFalse = True
+        details = details + "General logging is off."
+    else:
+        logger().warning("General logging untracked value: {}.".format(general_log))
+
+    if sess.my_conf["log_raw"] is not None:
+        log_raw = sess.my_conf["log_raw"]
+    else:
+        query = """SHOW VARIABLES LIKE 'log_raw';"""
+        result = exec_sql_query(con, query)
+        variable, log_raw = result[0]
+
+    parsed_data["log_raw"] = log_raw
+    log_raw = log_raw.strip().lower()
+
+    if log_raw == "on":
+        compliant = False
+        wasFalse = True
+        details = details + "Passwords can be exposed because of the log\\_raw setting."
+    elif log_raw == "off":
+        compliant = True
+        details = details + "Log\\_raw setting doesn't expose passwords."
+    else:
+        logger().warning("Log\\_raw setting untracked value: {}.".format(log_raw))
+
+    if sess.my_conf["slow_query_log"] is not None:
+        slow_query_log = sess.my_conf["slow_query_log"]
+    else:
+        query = """SHOW VARIABLES LIKE 'slow_query_log';"""
+        result = exec_sql_query(con, query)
+        variable, slow_query_log = result[0]
+
+    parsed_data["slow_query_log"] = slow_query_log
+    slow_query_log = slow_query_log.strip().lower()
+
+    if slow_query_log == "on":
+        compliant = True
+        details = details + "Slow query logging is on."
+    elif slow_query_log == "off":
+        compliant = False
+        wasFalse = True
+        details = details + "Slow query logging is off."
+    else:
+        logger().warning("Slow query logging untracked value: {}".format(slow_query_log))
+
+    if sess.my_conf["long_query_time"] is not None:
+        long_query_time = sess.my_conf["long_query_time"]
+    else:
+        query = """SHOW VARIABLES LIKE 'long_query_time';"""
+        result = exec_sql_query(con, query)
+        variable, long_query_time = result[0]
+
+    parsed_data["long_query_time"] = long_query_time
+
+    if long_query_time > 10:
+        compliant = False
+        wasFalse = True
+    else:
+        compliant = True
+
+    if sess.my_conf["innodb_strict_mode"] is not None:
+        innodb_strict_mode = sess.my_conf["innodb_strict_mode"]
+    else:
+        query = """SHOW VARIABLES LIKE 'innodb_strict_mode';"""
+        result = exec_sql_query(con, query)
+        variable, innodb_strict_mode = result[0]
+
+    parsed_data["innodb_strict_mode"] = innodb_strict_mode
+    innodb_strict_mode = innodb_strict_mode.strip().lower()
+
+    if innodb_strict_mode == "on":
+        compliant = True
+        details = details + "Innodb strict logging is on."
+    elif innodb_strict_mode == "off":
+        compliant = False
+        wasFalse = True
+        details = details + "Innodb strict logging is off."
+    else:
+        logger().warning("InnoDB strict logging untracked value: {}".format(innodb_strict_mode))
+
+    if wasFalse == True:
+        compliant = False
+
     return {
-        'compliant': "",
-        'config_details': ""
+        'compliant': compliant,
+        'config_details': details + "\\n" + latex_g.mysql_conf_dict_to_latex_table(parsed_data, "Variable", "Value"),
     }
 
 def test_verbose_errors(sess):
