@@ -218,7 +218,7 @@ def test_log_conf(sess):
 
     parsed_data = {}
 
-    general_log = sess.my_conf["general_log"]
+    general_log = sess.my_conf.get("general_log", None)
     if general_log is None:
         query = """SHOW VARIABLES LIKE 'general_log';"""
         result = exec_sql_query(con, query)
@@ -237,7 +237,7 @@ def test_log_conf(sess):
     else:
         logger().warning("General logging untracked value: {}.".format(general_log))
 
-    log_raw = sess.my_conf["log_raw"]
+    log_raw = sess.my_conf.get("log_raw", None)
     if log_raw is None:
         query = """SHOW VARIABLES LIKE 'log_raw';"""
         result = exec_sql_query(con, query)
@@ -256,7 +256,7 @@ def test_log_conf(sess):
     else:
         logger().warning("Log\\_raw setting untracked value: {}.".format(log_raw))
 
-    slow_query_log = sess.my_conf["slow_query_log"]
+    slow_query_log = sess.my_conf.get("slow_query_log", None)
     if slow_query_log is None:
         query = """SHOW VARIABLES LIKE 'slow_query_log';"""
         result = exec_sql_query(con, query)
@@ -275,7 +275,7 @@ def test_log_conf(sess):
     else:
         logger().warning("Slow query logging untracked value: {}".format(slow_query_log))
 
-    long_query_time = sess.my_conf["long_query_time"]
+    long_query_time = sess.my_conf.get("long_query_time", None)
     if long_query_time is None:
         query = """SHOW VARIABLES LIKE 'long_query_time';"""
         result = exec_sql_query(con, query)
@@ -289,7 +289,7 @@ def test_log_conf(sess):
     else:
         compliant = True
 
-    innodb_strict_mode = sess.my_conf["innodb_strict_mode"]
+    innodb_strict_mode = sess.my_conf.get("innodb_strict_mode", None)
     if innodb_strict_mode is None:
         query = """SHOW VARIABLES LIKE 'innodb_strict_mode';"""
         result = exec_sql_query(con, query)
