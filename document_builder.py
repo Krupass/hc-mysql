@@ -210,6 +210,20 @@ class DocumentBuilder:
                         "test_function": tests.test_transit_encryption
                     },
                     2: {
+                        "subsection": "Encryption at rest",
+                        "description": "",
+                        "compliant": False,
+                        "show_config": True,
+                        "required": ['db_connection'],
+                        "to_be_tested": False,
+                        "severity": self.sev["low"],
+                        "description_noncompliant": "",
+                        "description_compliant": "",
+                        "config_details": "",
+                        "recommendation": "",
+                        "test_function": tests.test_rest_encryption
+                    },
+                    3: {
                         "subsection":   "Insecure authentication methods",
                         "description":  "This test examines the 'mysql.user' table for outdated authentication plugins. Specifically, "
                                         "it identifies the use of 'mysql_old_password', which is highly insecure and has been removed "
@@ -227,7 +241,7 @@ class DocumentBuilder:
                         "config_details": "",
                         "test_function": tests.test_insecure_auth_methods
                     },
-                    3: {
+                    4: {
                         "subsection":   "Trust authentication",
                         "description":  "Trust authentication permits unrestricted access to the database for any user without requiring a password. "
                                         "This configuration poses a significant security risk, as it allows potentially unauthorized individuals "
@@ -244,7 +258,7 @@ class DocumentBuilder:
                         "config_details": "",
                         "test_function": tests.test_trust_authentication
                     },
-                    4: {
+                    5: {
                         "subsection": "Latest version of MySQL",
                         "description": "This test verifies whether the database uses the latest software version. "
                                        "Outdated versions could contain security vulnerabilities that could be used "
@@ -259,7 +273,7 @@ class DocumentBuilder:
                         "config_details": "",
                         "test_function": tests.test_software_version                    
                     },
-                    5: {
+                    6: {
                             "subsection":   "Permissions test",
                             "description":  "The following table provides a comprehensive overview of all privileges assigned within the specified database. "
                                             "This information is crucial for evaluating the access control mechanisms in place and identifying potential "
@@ -276,9 +290,15 @@ class DocumentBuilder:
                             "config_details": "",
                             "test_function": tests.test_user_permissions
                     },
-                    6: {
+                    7: {
                             "subsection": "Loadable functions",
-                            "description": "Verifies whether the database is capable of encrypting its data on database layer.",
+                            "description": "The purpose of this test is to verify that the MySQL server is properly "
+                                           "secured against potential abuse of loadable functions. The test will check "
+                                           "the value of the local_infile variable, which controls the ability to load "
+                                           "external files, and ensure that it is disabled. "
+                                           "Additionally, the test will inspect the contents of the mysql.func table, "
+                                           "which stores information about any custom functions that have been loaded "
+                                           "into the server.",
                             "compliant": False,
                             "show_config": True,
                             "required": ['db_connection'],
@@ -289,10 +309,10 @@ class DocumentBuilder:
                             "config_details": "",
                             "test_function": tests.test_loadable_functions
                     },
-                    7: {
+                    8: {
                             "subsection": "File system access",
                             "description": "Tests that the MySQL server is properly configured to restrict file system "
-                                           "access and that only authorized users have the FILE privilege",
+                                           "access and that only authorized users have the FILE privilege.",
                             "compliant": False,
                             "show_config": True,
                             "required": ['db_connection'],
@@ -303,7 +323,7 @@ class DocumentBuilder:
                             "config_details": "",
                             "test_function": tests.test_file_access
                     },
-                    8: {
+                    9: {
                             "subsection": "Log configuration",
                             "description": "Verifies that the the logging configuration of a MySQL server prevents "
                                            "sensitive data exposure and ensure compliance with security best practices.",
@@ -317,7 +337,7 @@ class DocumentBuilder:
                             "config_details": "",
                             "test_function": tests.test_log_conf
                     },
-                    9: {
+                    10: {
                             "subsection": "Client side errors",
                             "description": "This test checks the error verbosity setting on the MySQL server to "
                                            "determine if error messages are securely configured. The error verbosity"
@@ -339,7 +359,7 @@ class DocumentBuilder:
                             "config_details": "",
                             "test_function": tests.test_verbose_errors
                     },
-                    10: {
+                    11: {
                             "subsection": "Configuration of SSL",
                             "description": "This test verifies whether MySQL has SSL enabled. Additionally, it ensures "
                                            "that the required SSL variables are correctly configured.",
@@ -353,7 +373,7 @@ class DocumentBuilder:
                             "config_details": "",
                             "test_function": tests.test_ssl
                     },
-                    11: {
+                    12: {
                             "subsection": "SUPER privileges",
                             "description": "This test checks which users have the SUPER privilege in the MySQL database. "
                                            "The test queries the mysql.user table.",

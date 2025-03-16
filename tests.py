@@ -83,6 +83,23 @@ def test_transit_encryption(sess):
         'config_details' : details
     }
 
+def test_rest_encryption(sess):
+    con = sess.conn
+    query = ""
+    compliant = None
+    was_compliant_false = False
+    details = ""
+
+    result = exec_sql_query(con, query)
+
+    parsed_data = {}
+
+
+    return {
+        'compliant' : compliant,
+        'config_details' : details
+    }
+
 
 def test_insecure_auth_methods(sess):
     mysql_auth_methods = parser.parse_auth_methods(sess)
