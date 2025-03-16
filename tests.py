@@ -73,9 +73,7 @@ def test_transit_encryption(sess):
         compliant = True
         details = details + "List of permissible encryption ciphers specified. "
 
-    if was_compliant_false is False:
-        compliant = True
-    elif was_compliant_false is True:
+    if was_compliant_false is True:
         compliant = False
 
     details = details + "\n" + latex_g.mysql_conf_dict_to_latex_table(parsed_data, "Variable", "Value")
@@ -92,7 +90,8 @@ def test_insecure_auth_methods(sess):
     warning_methods = ["authentication_string"]
     secure_methods = ["caching_sha2_password", "sha256_password"]
     user_plugins_sorted = {}
-    compliant = True
+    compliant = None
+    was_false = False
 
     for user, values in mysql_auth_methods.items():
         if not user.strip().startswith("mysql."):
@@ -101,10 +100,12 @@ def test_insecure_auth_methods(sess):
             if plugin in insecure_methods:
                 user_plugins_sorted[user] = [plugin, "insecure"]
                 compliant = False
+                was_false = True
             elif plugin in warning_methods:
                 user_plugins_sorted[user] = [plugin, "warning"]
             elif plugin in secure_methods:
                 user_plugins_sorted[user] = [plugin, "secure"]
+                compliant = True
             else:
                 user_plugins_sorted[user] = [plugin, "unknown"]
 
@@ -113,7 +114,10 @@ def test_insecure_auth_methods(sess):
     details = ""
     if bool(user_plugins_sorted):
         details = latex_g.detail_to_latex(user_plugins_sorted, "User", "Host", "Plugin")
-    
+
+    if was_false is True:
+        compliant = False
+
     return {
         'compliant' : compliant,
         'config_details' : details
@@ -124,7 +128,7 @@ def test_trust_authentication(sess):
     mysql_auth_methods = parser.parse_auth_methods(sess)
     mysql_empty_passwords = parser.parse_empty_passwords(sess)
     insecure_users = {}
-    compliant = True
+    compliant = None
 
     for user, values in mysql_auth_methods.items():
         host, plugin = values
@@ -154,10 +158,10 @@ def test_software_version(sess):
     latest_mysql_version = "Unknown"
 
     try:
-        conn = sess.conn
-        cursor = conn.cursor()
-        cursor.execute("SELECT VERSION();")
-        installed_mysql_version = cursor.fetchone()[0]
+        con = sess.conn
+        query = "SELECT VERSION();"
+        result = exec_sql_query(con, query)
+        installed_mysql_version = result[0]
     except mysql.connector.Error as err:
         logger().warning("Error getting MySQL version from SQL query: {}".format(err))
 
@@ -194,13 +198,57 @@ def test_user_permissions(sess):
     }
 
 def test_loadable_functions(sess):
+    compliant = None
+    details = ""
+    con = sess.conn
+
+    parsed_data = {}
+
+    local_infile = sess.my_conf.get("mysqld_local_infile", None)
+    if local_infile is None:
+        query = """SHOW VARIABLES LIKE 'local_infile';"""
+        result = exec_sql_query(con, query)
+        variable, local_infile = result[0]
+
+    local_infile = local_infile.strip().lower()
+
+    if local_infile == "on":
+        compliant = False
+        details = details + "\\textbf{Clients can load functions by \\texttt{LOAD DATA} statements.} "
+    elif local_infile == "off":
+        compliant = True
+        details = details + "Clients can't use \\texttt{LOAD DATA} statements. "
+    else:
+        logger().warning("Local infile untracked value: {}.".format(local_infile))
+
+    query = """SELECT * FROM mysql.func;"""
+    result = exec_sql_query(con, query)
+
+    if result:
+        latex_table = ["\\begin{center}"]
+        latex_table.append("\\begin{tabular}{|l|l|l|l|}")
+        latex_table.append("\\hline")
+        latex_table.append("\\textbf{Name} & \\textbf{Ret} & \\textbf{Dll} & \\textbf{Type} \\\\ \\hline")
+
+        for row in result:
+            name, ret, dll, type = row
+            latex_row = f"{escape_latex(name)} & {escape_latex(ret)} & {escape_latex(dll)} & {escape_latex(type)} \\\\ \\hline"
+            latex_table.append(latex_row)
+
+        latex_table.append("\\end{tabular}")
+        latex_table.append("\\end{center}")
+        details = details + "\\textbf{Check if all function in mysql.func table are necessary.}" + "\n".join(latex_table)
+        compliant = False
+    else:
+        details = details + "No functions in mysql.func table."
+
     return {
-        'compliant': "",
-        'config_details': ""
+        'compliant': compliant,
+        'config_details': details
     }
 
 def test_file_access(sess):
-    compliant = False
+    compliant = None
     details = ""
     con = sess.conn
     query = """SELECT @@global.secure_file_priv;"""
@@ -244,7 +292,7 @@ def test_file_access(sess):
     }
 
 def test_log_conf(sess):
-    compliant = False
+    compliant = None
     wasFalse = False
     details = ""
     con = sess.conn
@@ -352,7 +400,7 @@ def test_log_conf(sess):
     }
 
 def test_verbose_errors(sess):
-    compliant = False
+    compliant = None
     details = ""
     con = sess.conn
     query = """SHOW VARIABLES LIKE 'log_error_verbosity';"""
@@ -384,7 +432,7 @@ def test_verbose_errors(sess):
     }
 
 def test_ssl(sess):
-    compliant = False
+    compliant = None
     con = sess.conn
     query = """SHOW VARIABLES 
                 LIKE 'have_ssl';"""
