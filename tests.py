@@ -16,40 +16,33 @@ def test_transit_encryption(sess):
     query = "SELECT user, host, ssl_type FROM mysql.user;"
     compliant = None
     was_compliant_false = False
-
-    logger().info("Testing transit encryption...")
+    details = ""
 
     result = exec_sql_query(con, query)
 
-    latex_table = "\\begin{center}\n\\begin{tabular}{|l|l|l|}\n\\hline\n"
-    latex_table += "\\textbf{USER} & \\textbf{HOST} & \\textbf{SSL\\_TYPE} \\\\ \\hline\n"
+    parsed_data = {}
 
     for row in result:
         user, host, ssl_type = row
         if not user.strip().startswith("mysql."):
             if ssl_type.strip().lower() == "x509" or ssl_type.strip().lower() == "ssl" or ssl_type.strip().lower() == "any":
                 compliant = True
-                print("User: " + user.strip() + " has ssl_type: " + ssl_type.strip() + " and is correctly setup.")
             else:
                 compliant = False
                 was_compliant_false = True
-
-                latex_row = f"{latex_g.escape_latex(user)} & {latex_g.escape_latex(host)} & {latex_g.escape_latex(ssl_type)} \\\\ \\hline\n"
-                latex_table += latex_row
-
-                print("User: " + user.strip() + " has ssl_type: " + ssl_type.strip() + " and is not correctly setup!")
+                parsed_data[user] = [host, ssl_type]
 
     if was_compliant_false is False:
         compliant = True
     elif was_compliant_false is True:
         compliant = False
 
-    latex_table += "\\end{tabular}"
-    latex_table += "\\end{center}\n"
+    if not parsed_data == {}:
+        details = latex_g.detail_to_latex(parsed_data, "User", "Host", "SSL Type")
 
     return {
         'compliant' : compliant,
-        'config_details' : latex_table
+        'config_details' : details,
     }
 
 
