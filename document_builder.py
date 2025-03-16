@@ -294,8 +294,8 @@ class DocumentBuilder:
                             "subsection": "Loadable functions",
                             "description": "The purpose of this test is to verify that the MySQL server is properly "
                                            "secured against potential abuse of loadable functions. The test will check "
-                                           "the value of the local_infile variable, which controls the ability to load "
-                                           "external files, and ensure that it is disabled. "
+                                           "the value of the \\texttt{local infile} variable, which controls the ability "
+                                           "to load external files, and ensure that it is disabled. "
                                            "Additionally, the test will inspect the contents of the mysql.func table, "
                                            "which stores information about any custom functions that have been loaded "
                                            "into the server.",

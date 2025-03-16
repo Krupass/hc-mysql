@@ -85,19 +85,30 @@ def test_transit_encryption(sess):
 
 def test_rest_encryption(sess):
     con = sess.conn
-    query = ""
+    query = """SELECT NAME, SPACE_TYPE, ENCRYPTION 
+                FROM INFORMATION_SCHEMA.INNODB_TABLESPACES"""
     compliant = None
     was_compliant_false = False
-    details = ""
 
     result = exec_sql_query(con, query)
-
     parsed_data = {}
 
+    for row in result:
+        name, space_type, encryption = row
+        if encryption.strip().lower() == "y":
+            compliant = True
+        else:
+            compliant = False
+            was_compliant_false = True
+
+        parsed_data[name] = [space_type, encryption]
+
+    if was_compliant_false is True:
+        compliant = False
 
     return {
         'compliant' : compliant,
-        'config_details' : details
+        'config_details' : latex_g.detail_to_latex(parsed_data, "Name", "Space Type", "Encryption")
     }
 
 
