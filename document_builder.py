@@ -211,16 +211,18 @@ class DocumentBuilder:
                     },
                     2: {
                         "subsection": "Encryption at rest",
-                        "description": "",
+                        "description": "This test verifies that database tablespaces are encrypted. If the value is 'Y', "
+                                       "it indicates that the tablespace is encrypted, while 'N' indicates that the "
+                                       "tablespace is not encrypted. The test will list all tablespaces along with their "
+                                       "encryption status.",
                         "compliant": False,
                         "show_config": True,
                         "required": ['db_connection'],
-                        "to_be_tested": False,
+                        "to_be_tested": True,
                         "severity": self.sev["low"],
-                        "description_noncompliant": "",
-                        "description_compliant": "",
+                        "description_noncompliant": "\\textbf{Not all tablespaces are encrypted}.",
+                        "description_compliant": "All tablespaces are encrypted.",
                         "config_details": "",
-                        "recommendation": "",
                         "test_function": tests.test_rest_encryption
                     },
                     3: {
