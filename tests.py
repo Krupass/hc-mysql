@@ -37,7 +37,7 @@ def test_transit_encryption(sess):
 
     parsed_data = {}
 
-    require_secure_transport = sess.my_conf.get("require_secure_transport", None)
+    require_secure_transport = sess.my_conf.get("mysqld_require_secure_transport", None)
     if require_secure_transport is None:
         query = """SHOW VARIABLES LIKE 'require_secure_transport';"""
         result = exec_sql_query(con, query)
@@ -48,15 +48,15 @@ def test_transit_encryption(sess):
 
     if require_secure_transport == "on":
         compliant = True
-        details = details + "Client is required to use some form of secure transport. "
+        details = details + "Clients are required to use some form of secure transport. "
     elif require_secure_transport == "off":
         compliant = False
         was_compliant_false = True
-        details = details + "\\textbf{Client isn't required to use form of secure transport. } "
+        details = details + "\\textbf{Clients aren't required to use form of secure transport. } "
     else:
         logger().warning("Require secure transport untracked value: {}.".format(require_secure_transport))
 
-    ssl_cipher = sess.my_conf.get("ssl_cipher", None)
+    ssl_cipher = sess.my_conf.get("mysqld_ssl_cipher", None)
     if ssl_cipher is None:
         query = """SHOW VARIABLES LIKE 'ssl_cipher';"""
         result = exec_sql_query(con, query)
@@ -251,7 +251,7 @@ def test_log_conf(sess):
 
     parsed_data = {}
 
-    general_log = sess.my_conf.get("general_log", None)
+    general_log = sess.my_conf.get("mysqld_general_log", None)
     if general_log is None:
         query = """SHOW VARIABLES LIKE 'general_log';"""
         result = exec_sql_query(con, query)
@@ -270,7 +270,7 @@ def test_log_conf(sess):
     else:
         logger().warning("General logging untracked value: {}.".format(general_log))
 
-    log_raw = sess.my_conf.get("log_raw", None)
+    log_raw = sess.my_conf.get("mysqld_log_raw", None)
     if log_raw is None:
         query = """SHOW VARIABLES LIKE 'log_raw';"""
         result = exec_sql_query(con, query)
@@ -289,7 +289,7 @@ def test_log_conf(sess):
     else:
         logger().warning("Log\\_raw setting untracked value: {}.".format(log_raw))
 
-    slow_query_log = sess.my_conf.get("slow_query_log", None)
+    slow_query_log = sess.my_conf.get("mysqld_slow_query_log", None)
     if slow_query_log is None:
         query = """SHOW VARIABLES LIKE 'slow_query_log';"""
         result = exec_sql_query(con, query)
@@ -308,7 +308,7 @@ def test_log_conf(sess):
     else:
         logger().warning("Slow query logging untracked value: {}".format(slow_query_log))
 
-    long_query_time = sess.my_conf.get("long_query_time", None)
+    long_query_time = sess.my_conf.get("mysqld_long_query_time", None)
     if long_query_time is None:
         query = """SHOW VARIABLES LIKE 'long_query_time';"""
         result = exec_sql_query(con, query)
@@ -324,7 +324,7 @@ def test_log_conf(sess):
         compliant = True
         details = details + "Long query time is set reasonably. "
 
-    innodb_strict_mode = sess.my_conf.get("innodb_strict_mode", None)
+    innodb_strict_mode = sess.my_conf.get("mysqld_innodb_strict_mode", None)
     if innodb_strict_mode is None:
         query = """SHOW VARIABLES LIKE 'innodb_strict_mode';"""
         result = exec_sql_query(con, query)
