@@ -32,17 +32,57 @@ def test_transit_encryption(sess):
                 was_compliant_false = True
                 parsed_data[user] = [host, ssl_type]
 
+    if not parsed_data == {}:
+        details = latex_g.detail_to_latex(parsed_data, "User", "Host", "SSL Type") + "\n"
+
+    parsed_data = {}
+
+    require_secure_transport = sess.my_conf.get("require_secure_transport", None)
+    if require_secure_transport is None:
+        query = """SHOW VARIABLES LIKE 'require_secure_transport';"""
+        result = exec_sql_query(con, query)
+        variable, require_secure_transport = result[0]
+
+    parsed_data["require_secure_transport"] = require_secure_transport
+    require_secure_transport = require_secure_transport.strip().lower()
+
+    if require_secure_transport == "on":
+        compliant = True
+        details = details + "Client is required to use some form of secure transport. "
+    elif require_secure_transport == "off":
+        compliant = False
+        was_compliant_false = True
+        details = details + "\\textbf{Client isn't required to use form of secure transport. } "
+    else:
+        logger().warning("Require secure transport untracked value: {}.".format(require_secure_transport))
+
+    ssl_cipher = sess.my_conf.get("ssl_cipher", None)
+    if ssl_cipher is None:
+        query = """SHOW VARIABLES LIKE 'ssl_cipher';"""
+        result = exec_sql_query(con, query)
+        variable, ssl_cipher = result[0]
+
+    parsed_data["ssl_cipher"] = ssl_cipher
+    ssl_cipher = ssl_cipher.strip().lower()
+
+    if ssl_cipher == "none" or ssl_cipher is None or ssl_cipher == "null" or ssl_cipher == "":
+        compliant = False
+        was_compliant_false = True
+        details = details + "\\textbf{No SSL encryption cipher specified. } "
+    else:
+        compliant = True
+        details = details + "List of permissible encryption ciphers specified. "
+
     if was_compliant_false is False:
         compliant = True
     elif was_compliant_false is True:
         compliant = False
 
-    if not parsed_data == {}:
-        details = latex_g.detail_to_latex(parsed_data, "User", "Host", "SSL Type")
+    details = details + "\n" + latex_g.mysql_conf_dict_to_latex_table(parsed_data, "Variable", "Value")
 
     return {
         'compliant' : compliant,
-        'config_details' : details,
+        'config_details' : details
     }
 
 
