@@ -82,7 +82,7 @@ def test_transit_encryption(sess):
     if was_compliant_false is True:
         compliant = False
 
-    details = details + "\n" + latex_g.mysql_conf_dict_to_latex_table(parsed_data, "Variable", "Value")
+    details = details + "\n" + latex_g.mysql_conf_dict_to_latex_table(parsed_data, "Variable", "Value", False)
 
     return {
         'compliant' : compliant,
@@ -432,7 +432,7 @@ def test_log_conf(sess):
 
     return {
         'compliant': compliant,
-        'config_details': details + "\n" + latex_g.mysql_conf_dict_to_latex_table(parsed_data, "Variable", "Value"),
+        'config_details': details + "\n" + latex_g.mysql_conf_dict_to_latex_table(parsed_data, "Variable", "Value", True),
     }
 
 def test_verbose_errors(sess):

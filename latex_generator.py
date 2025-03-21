@@ -4,14 +4,15 @@ import latex_generator as latex_g
 
 
 
-def mysql_conf_dict_to_latex_table(data, first, second):
+def mysql_conf_dict_to_latex_table(data, first, second, escape_second_column):
     latex_table = "\\begin{center}\n\\begin{tabular}{|l|c|}\n\\hline\n"
     latex_table += "\\textbf{" + escape_latex(first) + "} & \\textbf{" + escape_latex(second) + "} \\\\\n\\hline\n"
 
     for key, value in data.items():
         key = escape_latex(key)
         if isinstance(value, str):
-            value = escape_latex(value)
+            if escape_second_column:
+                value = escape_latex(value)
 
         latex_table += f"{key} & {value} \\\\\n\\hline\n"
 
