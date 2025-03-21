@@ -36,7 +36,7 @@ def test_transit_encryption(sess):
                     parsed_data[user] = [host, ssl_type]
 
     if not parsed_data == {}:
-        details = latex_g.detail_to_latex(parsed_data, "User", "Host", "SSL Type") + "\n"
+        details = latex_g.detail_to_latex(parsed_data, "User", "Host", "SSL Type", False) + "\n"
 
     parsed_data = {}
 
@@ -114,7 +114,7 @@ def test_rest_encryption(sess):
 
     return {
         'compliant' : compliant,
-        'config_details' : latex_g.detail_to_latex(parsed_data, "Name", "Space Type", "Encryption")
+        'config_details' : latex_g.detail_to_latex(parsed_data, "Name", "Space Type", "Encryption", True)
     }
 
 
@@ -149,7 +149,7 @@ def test_insecure_auth_methods(sess):
 
     details = ""
     if bool(user_plugins_sorted):
-        details = latex_g.detail_to_latex(user_plugins_sorted, "User", "Plugin", "Security")
+        details = latex_g.detail_to_latex(user_plugins_sorted, "User", "Plugin", "Security", True)
 
     if was_false is True:
         compliant = False
@@ -181,7 +181,7 @@ def test_trust_authentication(sess):
 
     details = ""
     if bool(insecure_users):
-        details = details + "\n" + latex_g.detail_to_latex(insecure_users, "User", "Plugin", "Password")
+        details = details + "\n" + latex_g.detail_to_latex(insecure_users, "User", "Plugin", "Password", True)
 
     
     return {
@@ -320,7 +320,7 @@ def test_file_access(sess):
             if user not in parsed_data:
                 parsed_data[user] = [host, file_priv]
 
-        details = details + "\n" + latex_g.detail_to_latex(parsed_data, "User", "Host", "File_priv")
+        details = details + "\n" + latex_g.detail_to_latex(parsed_data, "User", "Host", "File_priv", True)
 
     return {
         'compliant': compliant,
@@ -551,7 +551,7 @@ def test_super(sess):
             if user not in parsed_data:
                 parsed_data[user] = [host, super_priv]
 
-        details = latex_g.detail_to_latex(parsed_data, "User", "Host", "SUPER")
+        details = latex_g.detail_to_latex(parsed_data, "User", "Host", "SUPER", True)
         compliant = False
     else:
         compliant = True

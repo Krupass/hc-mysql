@@ -32,14 +32,17 @@ def privilege_dict_to_latex_table(privilege_dict):
     latex_table += "\\end{tabular}"
     return latex_table
 
-def detail_to_latex(sorted_dict, first, second, third):
+def detail_to_latex(sorted_dict, first, second, third, escape_third_column):
     latex_table = ["\\begin{center}"]
     latex_table.append("\\begin{tabular}{|l|c|c|}")
     latex_table.append("\\hline")
     latex_table.append("\\textbf{" + escape_latex(first) + "} & \\textbf{" + escape_latex(second) + "} & \\textbf{" + escape_latex(third) + "} \\\\ \\hline")
     for user, values in sorted_dict.items():
         plugin, security = values
-        latex_row = f"{escape_latex(user)} & {escape_latex(plugin)} & {escape_latex(security)} \\\\ \\hline"
+        if escape_third_column:
+            latex_row = f"{escape_latex(user)} & {escape_latex(plugin)} & {escape_latex(security)} \\\\ \\hline"
+        else:
+            latex_row = f"{escape_latex(user)} & {escape_latex(plugin)} & {security} \\\\ \\hline"
         latex_table.append(latex_row)
     
     latex_table.append("\\end{tabular}")
