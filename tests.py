@@ -212,15 +212,15 @@ def test_software_version(sess):
     else:
         latest_mysql_version = "9.2.0"
 
-    logger().info("Installed MySQL version: {}".format(installed_mysql_version))
+    logger().info("Installed MySQL version: {}".format(installed_mysql_version[0]))
     logger().info("Latest MySQL version: {}".format(latest_mysql_version))
 
-    is_updated = installed_mysql_version == latest_mysql_version
+    is_updated = installed_mysql_version[0] == latest_mysql_version
     details = ""
     if is_updated:
         details = "({}).".format(latest_mysql_version)
     else:
-        details = "{} instead of latest version {}".format(installed_mysql_version, latest_mysql_version)
+        details = "{} instead of latest version {}".format(installed_mysql_version[0], latest_mysql_version)
 
     return {
         'compliant' : is_updated,
