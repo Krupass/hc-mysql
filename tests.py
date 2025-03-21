@@ -30,7 +30,10 @@ def test_transit_encryption(sess):
             else:
                 compliant = False
                 was_compliant_false = True
-                parsed_data[user] = [host, ssl_type]
+                if ssl_type.strip() == "":
+                    parsed_data[user] = [host, "$\\times$"]
+                else:
+                    parsed_data[user] = [host, ssl_type]
 
     if not parsed_data == {}:
         details = latex_g.detail_to_latex(parsed_data, "User", "Host", "SSL Type") + "\n"
@@ -62,7 +65,10 @@ def test_transit_encryption(sess):
         result = exec_sql_query(con, query)
         variable, ssl_cipher = result[0]
 
-    parsed_data["ssl_cipher"] = ssl_cipher
+    if ssl_cipher.strip() == "":
+        parsed_data["ssl_cipher"] = "$\\times$"
+    else:
+        parsed_data["ssl_cipher"] = ssl_cipher.strip()
     ssl_cipher = ssl_cipher.strip().lower()
 
     if ssl_cipher == "none" or ssl_cipher is None or ssl_cipher == "null" or ssl_cipher == "":
@@ -115,7 +121,7 @@ def test_rest_encryption(sess):
 def test_insecure_auth_methods(sess):
     mysql_auth_methods = parser.parse_auth_methods(sess)
     insecure_methods = ["mysql_native_password", "mysql_old_password"]
-    warning_methods = ["authentication_string"]
+    warning_methods = []
     secure_methods = ["caching_sha2_password", "sha256_password"]
     user_plugins_sorted = {}
     compliant = None
@@ -136,12 +142,14 @@ def test_insecure_auth_methods(sess):
                 compliant = True
             else:
                 user_plugins_sorted[user] = [plugin, "unknown"]
+                compliant = False
+                was_false = True
 
 
 
     details = ""
     if bool(user_plugins_sorted):
-        details = latex_g.detail_to_latex(user_plugins_sorted, "User", "Host", "Plugin")
+        details = latex_g.detail_to_latex(user_plugins_sorted, "User", "Plugin", "Security")
 
     if was_false is True:
         compliant = False
@@ -173,7 +181,7 @@ def test_trust_authentication(sess):
 
     details = ""
     if bool(insecure_users):
-        details = latex_g.detail_to_latex(insecure_users, "User", "Plugin", "Password")
+        details = details + "\n" + latex_g.detail_to_latex(insecure_users, "User", "Plugin", "Password")
 
     
     return {

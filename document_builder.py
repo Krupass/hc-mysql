@@ -226,11 +226,11 @@ class DocumentBuilder:
                         "test_function": tests.test_rest_encryption
                     },
                     3: {
-                        "subsection":   "Insecure authentication methods",
+                        "subsection":   "Insecure authentication plugins",
                         "description":  "This test examines the 'mysql.user' table for outdated authentication plugins. Specifically, "
                                         "it identifies the use of 'mysql_old_password', which is highly insecure and has been removed "
                                         "in modern MySQL versions, and 'mysql_native_password', which relies on the SHA1 hashing algorithm"
-                                        " and is considered less secure than newer authentication methods such as 'caching_sha2_password'. "
+                                        " and is considered less secure than newer authentication plugins such as 'caching_sha2_password'. "
                                         "While 'mysql_native_password' is still widely used, its reliance on SHA1 makes it vulnerable to "
                                         "cryptographic weaknesses, and its use is discouraged in favor of stronger authentication plugins.",
                         "compliant": False,

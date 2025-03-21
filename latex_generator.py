@@ -5,7 +5,7 @@ import latex_generator as latex_g
 
 
 def mysql_conf_dict_to_latex_table(data, first, second):
-    latex_table = "\\begin{center}\n\\begin{tabular}{|l|l|}\n\\hline\n"
+    latex_table = "\\begin{center}\n\\begin{tabular}{|l|c|}\n\\hline\n"
     latex_table += "\\textbf{" + escape_latex(first) + "} & \\textbf{" + escape_latex(second) + "} \\\\\n\\hline\n"
 
     for key, value in data.items():
@@ -20,7 +20,7 @@ def mysql_conf_dict_to_latex_table(data, first, second):
     return latex_table
 
 def privilege_dict_to_latex_table(privilege_dict):
-    latex_table = "\\begin{tabular}{|l|l|l|p{3.3cm}|}\n\\hline\n"
+    latex_table = "\\begin{tabular}{|l|c|c|p{3.3cm}|}\n\\hline\n"
     latex_table += "\\textbf{User Type} & \\textbf{Table Schema} & \\textbf{Table Name} & \\textbf{Privilege Types} \\\\\n\\hline\n"
     
     for user_type, privileges in privilege_dict.items():
@@ -34,7 +34,7 @@ def privilege_dict_to_latex_table(privilege_dict):
 
 def detail_to_latex(sorted_dict, first, second, third):
     latex_table = ["\\begin{center}"]
-    latex_table.append("\\begin{tabular}{|l|l|l|}")
+    latex_table.append("\\begin{tabular}{|l|c|c|}")
     latex_table.append("\\hline")
     latex_table.append("\\textbf{" + escape_latex(first) + "} & \\textbf{" + escape_latex(second) + "} & \\textbf{" + escape_latex(third) + "} \\\\ \\hline")
     for user, values in sorted_dict.items():
