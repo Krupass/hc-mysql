@@ -3,6 +3,7 @@ from pathlib import Path
 import os
 from session import Session
 from utils.utils import get_default_mysql_config_path
+from utils.utils import get_default_mysql_exec_path
 from utils.utils import convert_dict_to_yaml
 from utils.global_logger import logger
 import pprint
@@ -32,7 +33,7 @@ def generate_database_documentation(dbname, user='root', password='', host='loca
                                      path=None, name=None, custom_latex_engine='pdflatex', language='en',
                                      no_report=True, setup_db=False, peth=None):
     path = path or get_default_mysql_config_path()
-    peth = peth or "C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\"
+    peth = peth or get_default_mysql_exec_path()
     args = argparse.Namespace(dbname=dbname, user=user, password=password, host=host, port=port,
                               path=path, name=name, custom_latex_engine=custom_latex_engine,
                               language=language, no_report=no_report, setup_db=setup_db, peth=peth)

@@ -56,6 +56,16 @@ def get_default_mysql_config_path():
         logger().info("unknown operational system: " + os.name)
         return None
 
+def get_default_mysql_exec_path():
+    if os.name == 'nt':
+        base = r"C:\Program Files\MySQL"
+        server = str(os.path.join(base, get_mysql_version(base)))
+        return str(os.path.join(server, "bin\\"))
+    elif os.name == 'posix':
+        return "/bin/"
+    else:
+        logger().info("unknown operational system: " + os.name)
+        return None
 
 def get_mysql_version_cmd(base_path):
     import platform, subprocess
