@@ -24,7 +24,7 @@ def parse_args():
     parser.add_argument('--language', choices=['en', 'cz'], default='en', help='Select the document language (en/cz)')
     parser.add_argument('--no-report', action='store_false', help='Disables converting latex code to pdf')
     parser.add_argument('--setup-db', action='store_true', help='Creates experimental database (development feature)')
-    parser.add_argument("--peth", type=Path, help="Select path to mysql.exe", default="C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\")
+    parser.add_argument("--peth", type=Path, help="Select path to mysql.exe", default=get_default_mysql_exec_path())
     return parser.parse_args()
 
 
