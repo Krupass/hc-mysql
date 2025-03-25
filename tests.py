@@ -262,7 +262,7 @@ def test_loadable_functions(sess):
 
     if result:
         latex_table = ["\\begin{center}"]
-        latex_table.append("\\begin{tabular}{|l|l|l|l|}")
+        latex_table.append("\\begin{tabular}{|l|c|c|c|}")
         latex_table.append("\\hline")
         latex_table.append("\\textbf{Name} & \\textbf{Ret} & \\textbf{Dll} & \\textbf{Type} \\\\ \\hline")
 
@@ -450,13 +450,13 @@ def test_verbose_errors(sess):
             compliant = True
             details = "\\textbf{Current level of error verbosity is 1, which is recommended setting.}"
         elif value == "2":
-            compliant = False
-            details = ("\\textbf{Current level of error verbosity is 2, which isn't recommended setting. "
-                       "Warnings are logged, consider reducing verbosity}")
+            compliant = True
+            details = ("\\textbf{Current level of error verbosity is 2, which is compromise between security and usability. "
+                       "Warnings are logged, consider reducing verbosity.}")
         elif value == "3":
             compliant = False
             details = ("\\textbf{Current level of error verbosity is 3, which is insecure setting. "
-                       "Detailed logs could expose sensitive information}")
+                       "Detailed logs could expose sensitive information.}")
         else:
             logger().warning("Unknown log_error_verbosity value: {}".format(value))
     else:
