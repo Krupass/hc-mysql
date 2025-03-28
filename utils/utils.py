@@ -51,9 +51,9 @@ def get_default_mysql_config_path():
         base = r"C:\ProgramData\MySQL"
         return str(os.path.join(base, get_mysql_version(base)))
     elif os.name == 'posix':
-        return "/etc/mysql/my.cnf"
+        return "/etc/mysql/"
     else:
-        logger().info("unknown operational system: " + os.name)
+        logger().error("unknown operational system: " + os.name)
         return None
 
 def get_default_mysql_exec_path():

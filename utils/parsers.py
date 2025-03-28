@@ -37,25 +37,22 @@ def parse_mysql_conf(self, path):
     config = {}
     try:
         with open(path, 'r') as file:
-            for line in file:
-                stripped_line = line.strip()
-                if stripped_line.startswith('#') or not stripped_line:
-                    continue
-                if '#' in stripped_line:
-                    stripped_line = stripped_line.split('#', 1)[0].strip()
-                
-                parts = stripped_line.split('=', 1)
-                if len(parts) == 2:
-                    key, value = parts
-                    key = key.strip()
-                    value = value.strip()
-
-                    if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
-                        value = value[1:-1]
-                    
-                    config[key] = value
+            content = file.read()
+            file.close()
+            group = None
+            for line in content.splitlines():
+                if line.strip() and not line.strip().startswith("#"):
+                    if line.strip().startswith("["):
+                        group = line.strip()[1:-1]
+                    if "=" in line:
+                        key, value = line.split("=", 1)
+                        if group is None:
+                            config[key.strip()] = value.strip()
+                        else:
+                            key = f"{group}_{key.strip()}"
+                            config[key] = value.strip()
     except FileNotFoundError:
-        raise errors.FileNotFound(path) 
+        raise errors.FileNotFound(path)
     return config
 
 def parse_auth_methods(self):

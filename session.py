@@ -38,37 +38,23 @@ class Session():
             logger().warning(f"Error: {e}")
             #vynechat testy ktere potrebuji pripojeni k databazi
 
-        my_conf_path = os.path.join(self.config_path, "my.ini")
+        if os.name == 'nt':
+            my_conf_path = os.path.join(self.config_path, "my.ini")
+        elif os.name == 'posix':
+            my_conf_path = os.path.join(self.config_path, "my.cnf")
+        else:
+            logger().error("unknown operational system: " + os.name)
+            my_conf_path = None
 
         try:
-            with open(my_conf_path, "r", encoding="utf-8") as file:
-                content = file.read()
-                file.close()
-
-            self.my_conf = {}
-
-            group = None
-            for line in content.splitlines():
-                if line.strip() and not line.strip().startswith("#"):
-                    if line.strip().startswith("["):
-                        group = line.strip()[1:-1]
-                    if "=" in line:
-                        key, value = line.split("=", 1)
-                        if group is None:
-                            self.my_conf[key.strip()] = value.strip()
-                        else:
-                            key = f"{group}_{key.strip()}"
-                            self.my_conf[key] = value.strip()
-
-
-            # for key, value in self.my_conf.items():
-            #     print(f"{key}: {value}")
-
+            self.my_conf = parse.parse_mysql_conf(self, my_conf_path)
             logger().info("my.ini configuration file successfully loaded.")
             self.resources.append('my.ini')
 
         except FileNotFoundError:
             logger().warning(f"config file not found: {my_conf_path}")
+        except Exception as e:
+            logger().error(f"Error while parsing database configuration: {e}")
 
 
         # parse database privileges
