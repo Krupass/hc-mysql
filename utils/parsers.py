@@ -36,7 +36,7 @@ def parse_database_privileges(self):
 def parse_mysql_conf(self, path):
     config = {}
     try:
-        with open(path, 'r') as file:
+        with open(path, 'r', encoding="utf-8") as file:
             content = file.read()
             file.close()
             group = None
