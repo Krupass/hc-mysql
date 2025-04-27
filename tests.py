@@ -435,38 +435,6 @@ def test_log_conf(sess):
         'config_details': details + "\n" + latex_g.mysql_conf_dict_to_latex_table(parsed_data, "Variable", "Value", True),
     }
 
-def test_verbose_errors(sess):
-    compliant = None
-    details = ""
-    con = sess.conn
-    query = """SHOW VARIABLES LIKE 'log_error_verbosity';"""
-
-    result =  exec_sql_query(con, query)
-
-    variable, value = result[0]
-
-    if variable == "log_error_verbosity":
-        if value == "1":
-            compliant = True
-            details = "\\textbf{Current level of error verbosity is 1, which is recommended setting.}"
-        elif value == "2":
-            compliant = True
-            details = ("\\textbf{Current level of error verbosity is 2, which is compromise between security and usability. "
-                       "Warnings are logged, consider reducing verbosity.}")
-        elif value == "3":
-            compliant = False
-            details = ("\\textbf{Current level of error verbosity is 3, which is insecure setting. "
-                       "Detailed logs could expose sensitive information.}")
-        else:
-            logger().warning("Unknown log_error_verbosity value: {}".format(value))
-    else:
-        logger().warning("Unknown variable in verbose errors testing: {}".format(variable))
-
-    return {
-        'compliant': compliant,
-        'config_details': details
-    }
-
 def test_ssl(sess):
     compliant = None
     con = sess.conn
